@@ -1,0 +1,24 @@
+name: GeoCraft
+version: 0.1.0
+main: dev.lesroseaux.geocraft.GeoCraft
+description: Geoguessr but in Minecraft
+author: Matteo Langlois
+website: https://github.com/matteolanglois/geocraft
+api-version: "1.21"
+commands:
+  geocraft-create:
+    description: Create a new zone
+    usage: /greocraft-create zoneName
+  geocraft-list:
+    description: List all the zones
+    usage: /geocraft-list
+  geocraft-start:
+    description: Start a game
+    usage: /geocraft-start
+  geocraft-reloaddb:
+    description: Reload the database
+    usage: /geocraft-reloaddb
+  geocraft-join:
+    description: Join a game
+    usage: /geocraft-join
+

@@ -1,16 +1,16 @@
-package dev.lesroseaux.geocraft.data.commands;
+package dev.lesroseaux.geocraft.controllers.commands;
 
 import dev.lesroseaux.geocraft.GeoCraft;
 import dev.lesroseaux.geocraft.data.dao.CityDao;
 import dev.lesroseaux.geocraft.data.dao.DistrictDao;
 import dev.lesroseaux.geocraft.data.dao.RegionDao;
-import dev.lesroseaux.geocraft.data.dao.RoadDAO;
+import dev.lesroseaux.geocraft.data.dao.RoadDao;
 import dev.lesroseaux.geocraft.data.dao.WorldDao;
-import dev.lesroseaux.geocraft.models.Location.City;
-import dev.lesroseaux.geocraft.models.Location.District;
-import dev.lesroseaux.geocraft.models.Location.GeoCraftWorld;
-import dev.lesroseaux.geocraft.models.Location.Region;
-import dev.lesroseaux.geocraft.models.Location.Road;
+import dev.lesroseaux.geocraft.models.location.City;
+import dev.lesroseaux.geocraft.models.location.District;
+import dev.lesroseaux.geocraft.models.location.GeoCraftWorld;
+import dev.lesroseaux.geocraft.models.location.Region;
+import dev.lesroseaux.geocraft.models.location.Road;
 import io.papermc.paper.command.brigadier.BasicCommand;
 import io.papermc.paper.command.brigadier.CommandSourceStack;
 import java.util.ArrayList;
@@ -30,13 +30,13 @@ public class GeocraftCreate implements BasicCommand {
   }
 
   @Override
-  public void execute(@NotNull CommandSourceStack commandSourceStack, @NotNull String[] strings) {
+  public void execute(@NotNull CommandSourceStack commandSourceStack, String[] @NotNull strings) {
     Player sender = (Player) commandSourceStack.getSender();
     switch (strings[0]) {
       case "region" -> {
         if (strings.length > 1) {
           // Check if the world is already in the database
-          if (new WorldDao().getByUUID(sender.getWorld().getUID()) == null) {
+          if (new WorldDao().getByUuid(sender.getWorld().getUID()) == null) {
             new WorldDao().insert(new GeoCraftWorld(sender.getWorld()));
           }
           new RegionDao().insert(
@@ -53,7 +53,7 @@ public class GeocraftCreate implements BasicCommand {
             sender.sendMessage(Component.text("Region " + strings[2] + " not found."));
             return;
           }
-          new CityDao().insert(new City(strings[1], region.getRegion_id()));
+          new CityDao().insert(new City(strings[1], region.getRegionId()));
           sender.sendMessage(Component.text("City created."));
         } else {
           sender.sendMessage(Component.text("You must specify a city name and a region name."));
@@ -63,7 +63,7 @@ public class GeocraftCreate implements BasicCommand {
         if (strings.length > 2) {
           City city = new CityDao().getCityByName(strings[2]);
           if (city != null) {
-            new DistrictDao().insert(new District(0, strings[1], city.getCity_id()));
+            new DistrictDao().insert(new District(0, strings[1], city.getCityId()));
             sender.sendMessage(Component.text("District created."));
           } else {
             sender.sendMessage(Component.text("City " + strings[2] + " + not found."));
@@ -74,16 +74,18 @@ public class GeocraftCreate implements BasicCommand {
         }
       }
       case "road" -> {
-        if (plugin.getTempPoint1() != null && plugin.getTempPoint2() != null &&
-            strings.length > 1) {
+        // /geocraft create road <name> <district>
+        if (plugin.getTempPoint1() != null && plugin.getTempPoint2() != null
+            && strings.length > 1) {
           District district = new DistrictDao().getDistrictByName(strings[2]);
-          new RoadDAO().insert(
-              new Road(plugin.getTempPoint1(), plugin.getTempPoint2(), strings[1], district.getDistrict_id()));
+          new RoadDao().insert(
+              new Road(plugin.getTempPoint1(), plugin.getTempPoint2(), strings[1],
+                  district.getDistrictId()));
           sender.sendMessage(Component.text("Zone created."));
         } else if (plugin.getTempPoint1() == null || plugin.getTempPoint2() == null) {
           sender.sendMessage(
-              Component.text("You must select two points first. Use a compass " +
-                  "to select points."));
+              Component.text("You must select two points first. Use a compass "
+                  + "to select points."));
         } else {
           sender.sendMessage(Component.text("You must specify a zone name."));
         }
@@ -101,21 +103,23 @@ public class GeocraftCreate implements BasicCommand {
     } else if (args.length == 3) {
       switch (args[0]) {
         case "city":
-          for (Region r: new RegionDao().getAllRegionsByWorldId(
+          for (Region r : new RegionDao().getAllRegionsByWorldId(
               ((Player) commandSourceStack.getSender()).getWorld().getUID())) {
-            suggests.add(r.getRegion_name());
+            suggests.add(r.getRegionName());
           }
           return suggests;
         case "district":
-          for (City r: new CityDao().getAll()) {
-            suggests.add(r.getCity_name());
+          for (City r : new CityDao().getAll()) {
+            suggests.add(r.getCityName());
           }
           return suggests;
         case "road":
-          for (District r: new DistrictDao().getAll()) {
-            suggests.add(r.getDistrict_name());
+          for (District r : new DistrictDao().getAll()) {
+            suggests.add(r.getDistrictName());
           }
           return suggests;
+        default:
+          return BasicCommand.super.suggest(commandSourceStack, args);
       }
     }
     return BasicCommand.super.suggest(commandSourceStack, args);

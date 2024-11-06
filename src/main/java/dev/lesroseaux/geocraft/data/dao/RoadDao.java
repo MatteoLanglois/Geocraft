@@ -1,20 +1,21 @@
 package dev.lesroseaux.geocraft.data.dao;
 
-import dev.lesroseaux.geocraft.models.Location.GeoCraftWorld;
-import dev.lesroseaux.geocraft.models.Location.Road;
+import dev.lesroseaux.geocraft.models.location.GeoCraftWorld;
+import dev.lesroseaux.geocraft.models.location.Road;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.Statement;
 import java.util.ArrayList;
 import org.bukkit.Location;
 
-public class RoadDAO extends AbstractDao<Road> {
+public class RoadDao extends AbstractDao<Road> {
   @Override
   public int insert(Road obj) {
-    String preparedStatement = "INSERT INTO road (zone_name, district_id, zone_point1_x, zone_point1_y, " +
-        "zone_point1_z, zone_point2_x, zone_point2_y, zone_point2_z) VALUES " +
-        "(?, ?, ?, ?, ?, ?, ?, ?);";
-    try (PreparedStatement statement = connection.prepareStatement(preparedStatement, PreparedStatement.RETURN_GENERATED_KEYS)) {
+    String preparedStatement = "INSERT INTO road (zone_name, district_id, zone_point1_x, "
+        + "zone_point1_y, zone_point1_z, zone_point2_x, zone_point2_y, zone_point2_z)"
+        + " VALUES (?, ?, ?, ?, ?, ?, ?, ?);";
+    try (PreparedStatement statement = connection.prepareStatement(preparedStatement,
+        PreparedStatement.RETURN_GENERATED_KEYS)) {
       connection.setAutoCommit(false);
       statement.setString(1, obj.getZoneName());
       statement.setInt(2, obj.getDistrictId());
@@ -41,14 +42,14 @@ public class RoadDAO extends AbstractDao<Road> {
       PreparedStatement statement = connection.prepareStatement(preparedStatement);
       connection.setAutoCommit(false);
       statement.setString(1, obj.getZoneName());
-      statement.setDouble(2, obj.getPoint1().x());
-      statement.setDouble(2, obj.getPoint1().y());
-      statement.setDouble(2, obj.getPoint1().z());
-      statement.setDouble(2, obj.getPoint2().x());
-      statement.setDouble(2, obj.getPoint2().y());
-      statement.setDouble(2, obj.getPoint2().z());
+      statement.setDouble(2, obj.getPoint1().getX());
+      statement.setDouble(3, obj.getPoint1().getY());
+      statement.setDouble(4, obj.getPoint1().getZ());
+      statement.setDouble(5, obj.getPoint2().getX());
+      statement.setDouble(6, obj.getPoint2().getY());
+      statement.setDouble(7, obj.getPoint2().getZ());
       statement.setInt(8, obj.getZoneId());
-      statement.executeQuery();
+      statement.executeUpdate();
       connection.commit();
     } catch (Exception e) {
       throw new RuntimeException(e);
@@ -62,12 +63,11 @@ public class RoadDAO extends AbstractDao<Road> {
       PreparedStatement statement = connection.prepareStatement(preparedStatement);
       connection.setAutoCommit(false);
       statement.setInt(1, obj.getZoneId());
-      statement.executeQuery();
+      statement.executeUpdate();
       connection.commit();
     } catch (Exception e) {
       throw new RuntimeException(e);
     }
-
   }
 
   @Override
@@ -123,11 +123,9 @@ public class RoadDAO extends AbstractDao<Road> {
       WorldDao worldDao = new WorldDao();
       GeoCraftWorld world = worldDao.getWorldByZoneId(resultSet.getInt("zone_id"));
       Location point1 = new Location(world.getWorld(), resultSet.getDouble("zone_point1_x"),
-          resultSet.getDouble("zone_point1_y"),
-          resultSet.getDouble("zone_point1_z"));
+          resultSet.getDouble("zone_point1_y"), resultSet.getDouble("zone_point1_z"));
       Location point2 = new Location(world.getWorld(), resultSet.getDouble("zone_point2_x"),
-          resultSet.getDouble("zone_point2_y"),
-          resultSet.getDouble("zone_point2_z"));
+          resultSet.getDouble("zone_point2_y"), resultSet.getDouble("zone_point2_z"));
       return new Road(point1, point2, resultSet.getString("zone_name"),
           resultSet.getInt("district_id"));
     } catch (Exception e) {
@@ -135,7 +133,7 @@ public class RoadDAO extends AbstractDao<Road> {
     }
   }
 
-  public static String getTableCreationQuery() {
+  public String getTableCreationQuery() {
     return "CREATE TABLE IF NOT EXISTS road ("
         + "zone_id INT AUTO_INCREMENT PRIMARY KEY,"
         + "zone_name VARCHAR(255) NOT NULL,"
@@ -148,15 +146,5 @@ public class RoadDAO extends AbstractDao<Road> {
         + "zone_point2_z DOUBLE NOT NULL,"
         + "FOREIGN KEY (district_id) REFERENCES districts(district_id)"
         + ")";
-  }
-
-  @Override
-  public void createTable() {
-    String query = getTableCreationQuery();
-    try {
-      connection.prepareStatement(query).executeUpdate();
-    } catch (Exception e) {
-      throw new RuntimeException(e);
-    }
   }
 }

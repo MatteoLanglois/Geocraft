@@ -1,6 +1,6 @@
 package dev.lesroseaux.geocraft.data.dao;
 
-import dev.lesroseaux.geocraft.models.Location.GeoCraftWorld;
+import dev.lesroseaux.geocraft.models.location.GeoCraftWorld;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.util.ArrayList;
@@ -10,7 +10,8 @@ public class WorldDao extends AbstractDao<GeoCraftWorld> {
   @Override
   public int insert(GeoCraftWorld obj) {
     String preparedQuery = "INSERT INTO worlds (world_id, world_name) VALUES (?, ?)";
-    try (PreparedStatement statement = connection.prepareStatement(preparedQuery, PreparedStatement.RETURN_GENERATED_KEYS)) {
+    try (PreparedStatement statement = connection.prepareStatement(preparedQuery,
+        PreparedStatement.RETURN_GENERATED_KEYS)) {
       connection.setAutoCommit(false);
       statement.setString(1, obj.getWorldId().toString());
       statement.setString(2, obj.getWorldName());
@@ -56,7 +57,7 @@ public class WorldDao extends AbstractDao<GeoCraftWorld> {
     throw new UnsupportedOperationException("Does not support getById(int) operation");
   }
 
-  public GeoCraftWorld getByUUID(UUID id) {
+  public GeoCraftWorld getByUuid(UUID id) {
     String preparedQuery = "SELECT * FROM worlds WHERE world_id = ?";
     try (PreparedStatement statement = connection.prepareStatement(preparedQuery)) {
       statement.setString(1, id.toString());
@@ -80,7 +81,8 @@ public class WorldDao extends AbstractDao<GeoCraftWorld> {
   }
 
   public GeoCraftWorld getWorldByZoneId(int zoneId) {
-    String preparedQuery = "SELECT * FROM worlds WHERE world_id = (SELECT world_id FROM road WHERE zone_id = ?)";
+    String preparedQuery = "SELECT * FROM worlds WHERE world_id "
+        + "= (SELECT world_id FROM road WHERE zone_id = ?)";
     try {
       PreparedStatement statement = connection.prepareStatement(preparedQuery);
       statement.setInt(1, zoneId);
@@ -97,20 +99,10 @@ public class WorldDao extends AbstractDao<GeoCraftWorld> {
     return null;
   }
 
-  public static String getTableCreationQuery() {
+  public String getTableCreationQuery() {
     return "CREATE TABLE IF NOT EXISTS worlds ("
-        + "world_id VARCHAR(36) PRIMARY KEY,"
+        + "world_uuid VARCHAR(36) PRIMARY KEY,"
         + "world_name VARCHAR(255) NOT NULL"
         + ")";
-  }
-
-  @Override
-  public void createTable() {
-    String query = getTableCreationQuery();
-    try {
-      connection.prepareStatement(query).executeUpdate();
-    } catch (Exception e) {
-      throw new RuntimeException(e);
-    }
   }
 }

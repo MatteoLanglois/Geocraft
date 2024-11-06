@@ -1,4 +1,4 @@
-package dev.lesroseaux.geocraft.data.commands;
+package dev.lesroseaux.geocraft.controllers.commands;
 
 import dev.lesroseaux.geocraft.GeoCraft;
 import dev.lesroseaux.geocraft.data.DatabaseOptions;

@@ -1,6 +1,6 @@
 package dev.lesroseaux.geocraft.data.dao;
 
-import dev.lesroseaux.geocraft.models.Location.Region;
+import dev.lesroseaux.geocraft.models.location.Region;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -12,10 +12,11 @@ public class RegionDao extends AbstractDao<Region> {
   @Override
   public int insert(Region obj) {
     String preparedStatement = "INSERT INTO regions (region_name, world_id) VALUES (?, ?)";
-    try (PreparedStatement statement = connection.prepareStatement(preparedStatement, PreparedStatement.RETURN_GENERATED_KEYS)) {
+    try (PreparedStatement statement = connection.prepareStatement(preparedStatement,
+        PreparedStatement.RETURN_GENERATED_KEYS)) {
       connection.setAutoCommit(false);
-      statement.setString(1, obj.getRegion_name());
-      statement.setString(2, obj.getWorld_id().toString());
+      statement.setString(1, obj.getRegionName());
+      statement.setString(2, obj.getWorldId().toString());
       int result = statement.executeUpdate();
       connection.commit();
       return result;
@@ -96,22 +97,13 @@ public class RegionDao extends AbstractDao<Region> {
     return r;
   }
 
-  public static String getTableCreationQuery() {
+  public String getTableCreationQuery() {
     return "CREATE TABLE IF NOT EXISTS regions ("
         + "region_id INT AUTO_INCREMENT PRIMARY KEY,"
         + "region_name VARCHAR(255) NOT NULL,"
         + "world_id VARCHAR(36) NOT NULL,"
         + "FOREIGN KEY (world_id) REFERENCES worlds(world_id)"
         + ")";
-  }
-
-  public void createTable() {
-    String query = getTableCreationQuery();
-    try {
-      connection.prepareStatement(query).executeUpdate();
-    } catch (Exception e) {
-      throw new RuntimeException(e);
-    }
   }
 
   public Region getRegionByName(@NotNull String regionName) {

@@ -67,12 +67,12 @@ public class DatabaseOptions implements ConfigurationSerializable {
   }
 
   public String toString() {
-    return "DatabaseOptions{" +
-        "host='" + host + '\'' +
-        ", port=" + port +
-        ", name='" + name + '\'' +
-        ", username='" + username + '\'' +
-        ", password='" + password + '\'' +
-        '}';
+    return "DatabaseOptions{"
+        + "host='" + host + '\''
+        + ", port=" + port
+        + ", name='" + name + '\''
+        + ", username='" + username + '\''
+        + ", password='" + password + '\''
+        + '}';
   }
 }

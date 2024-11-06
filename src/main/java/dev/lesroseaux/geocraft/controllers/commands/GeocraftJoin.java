@@ -1,13 +1,18 @@
-package dev.lesroseaux.geocraft.data.commands;
+package dev.lesroseaux.geocraft.controllers.commands;
 
+import dev.lesroseaux.geocraft.models.game.Game;
+import dev.lesroseaux.geocraft.models.game.GameManager;
 import io.papermc.paper.command.brigadier.BasicCommand;
 import io.papermc.paper.command.brigadier.CommandSourceStack;
 import java.util.Collection;
+import java.util.HashMap;
 import org.bukkit.command.CommandSender;
+import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
-public class GeocraftInfo implements BasicCommand {
+public class GeocraftJoin implements BasicCommand {
+
   /**
    * Executes the command with the given {@link CommandSourceStack} and arguments.
    *
@@ -16,7 +21,19 @@ public class GeocraftInfo implements BasicCommand {
    */
   @Override
   public void execute(@NotNull CommandSourceStack commandSourceStack, @NotNull String[] args) {
+    // Update instance of the game
+    GameManager gameManager = GameManager.getInstance();
 
+    if (!gameManager.isGameStarted()) {
+      if (gameManager.isPlayerInGame((Player) commandSourceStack.getSender())) {
+        commandSourceStack.getSender().sendMessage("You have already joined the game.");
+      } else {
+        gameManager.addPlayer((Player) commandSourceStack.getSender());
+        commandSourceStack.getSender().sendMessage("You joined the game.");
+      }
+    } else {
+      commandSourceStack.getSender().sendMessage("The game has already started.");
+    }
   }
 
   /**

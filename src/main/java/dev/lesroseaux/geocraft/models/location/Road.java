@@ -1,10 +1,10 @@
-package dev.lesroseaux.geocraft.models.Location;
+package dev.lesroseaux.geocraft.models.location;
 
 import java.util.ArrayList;
 import java.util.List;
 import org.bukkit.Location;
 
-public class Road implements PlayableZone  {
+public class Road implements PlayableZone {
   private final int zoneId;
   private String zoneName;
   private Location zonePoint1;
@@ -63,18 +63,6 @@ public class Road implements PlayableZone  {
     this.districtId = districtId;
   }
 
-  public boolean contains(Location location) {
-    int x1 = Math.min(zonePoint1.getBlockX(), zonePoint2.getBlockX());
-    int x2 = Math.max(zonePoint1.getBlockX(), zonePoint2.getBlockX());
-    int y1 = Math.min(zonePoint1.getBlockY(), zonePoint2.getBlockY());
-    int y2 = Math.max(zonePoint1.getBlockY(), zonePoint2.getBlockY());
-    int z1 = Math.min(zonePoint1.getBlockZ(), zonePoint2.getBlockZ());
-    int z2 = Math.max(zonePoint1.getBlockZ(), zonePoint2.getBlockZ());
-    return location.getBlockX() >= x1 && location.getBlockX() <= x2
-        && location.getBlockY() >= y1 && location.getBlockY() <= y2
-        && location.getBlockZ() >= z1 && location.getBlockZ() <= z2;
-  }
-
   public static String printAllZones(ArrayList<Road> roads) {
     StringBuilder sb = new StringBuilder();
     for (Road road : roads) {
@@ -89,5 +77,10 @@ public class Road implements PlayableZone  {
   @Override
   public ArrayList<Road> getZones() {
     return new ArrayList<>(List.of(this));
+  }
+
+  @Override
+  public int getId() {
+    return zoneId;
   }
 }

@@ -1,4 +1,4 @@
-package dev.lesroseaux.geocraft.models.Location;
+package dev.lesroseaux.geocraft.models.location;
 
 import dev.lesroseaux.geocraft.data.dao.RegionDao;
 import java.util.ArrayList;
@@ -7,16 +7,16 @@ import org.bukkit.World;
 
 public class GeoCraftWorld implements PlayableZone {
   private World world;
-  private UUID world_id;
-  private String world_name;
+  private UUID worldId;
+  private String worldName;
 
   public GeoCraftWorld() {
   }
 
-  private GeoCraftWorld(World world, UUID world_id, String world_name) {
+  private GeoCraftWorld(World world, UUID worldId, String worldName) {
     this.world = world;
-    this.world_id = world_id;
-    this.world_name = world_name;
+    this.worldId = worldId;
+    this.worldName = worldName;
   }
 
   public GeoCraftWorld(World world) {
@@ -25,8 +25,7 @@ public class GeoCraftWorld implements PlayableZone {
 
   @Override
   public ArrayList<Road> getZones() {
-    RegionDao regionDao = new RegionDao();
-    ArrayList<Region> regions = regionDao.getAllRegionsByWorldId(this.world_id);
+    ArrayList<Region> regions = new RegionDao().getAllRegionsByWorldId(this.worldId);
     ArrayList<Road> roads = new ArrayList<>();
     for (Region region : regions) {
       roads.addAll(region.getZones());
@@ -34,27 +33,32 @@ public class GeoCraftWorld implements PlayableZone {
     return roads;
   }
 
+  @Override
+  public int getId() {
+    return 0;
+  }
+
   public World getWorld() {
     return world;
   }
 
   public UUID getWorldId() {
-    return world_id;
+    return worldId;
   }
 
   public String getWorldName() {
-    return world_name;
+    return worldName;
   }
 
   public void setWorld(World world) {
     this.world = world;
   }
 
-  public void setWorldId(UUID world_id) {
-    this.world_id = world_id;
+  public void setWorldId(UUID worldId) {
+    this.worldId = worldId;
   }
 
-  public void setWorldName(String world_name) {
-    this.world_name = world_name;
+  public void setWorldName(String worldName) {
+    this.worldName = worldName;
   }
 }

@@ -1,2 +1,2 @@
-rootProject.name = "GeoCfraft"
+rootProject.name = "GeoCraft"
 

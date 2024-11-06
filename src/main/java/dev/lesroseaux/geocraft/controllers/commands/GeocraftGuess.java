@@ -1,18 +1,14 @@
-package dev.lesroseaux.geocraft.data.commands;
+package dev.lesroseaux.geocraft.controllers.commands;
 
-import dev.lesroseaux.geocraft.models.Game.Game;
+import dev.lesroseaux.geocraft.models.game.GameManager;
 import io.papermc.paper.command.brigadier.BasicCommand;
 import io.papermc.paper.command.brigadier.CommandSourceStack;
 import java.util.Collection;
-import java.util.HashMap;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
-import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
+import org.jspecify.annotations.Nullable;
 
-public class GeocraftJoin implements BasicCommand {
-  private HashMap<Player, Boolean> alreadyJoined = new HashMap<>();
-
+public class GeocraftGuess implements BasicCommand {
   /**
    * Executes the command with the given {@link CommandSourceStack} and arguments.
    *
@@ -20,17 +16,34 @@ public class GeocraftJoin implements BasicCommand {
    * @param args               the arguments of the command ignoring repeated spaces
    */
   @Override
-  public void execute(@NotNull CommandSourceStack commandSourceStack, @NotNull String[] args) {
-    // Update instance of the game
-    Game game = Game.getInstance();
-
-    if (!alreadyJoined.containsKey(commandSourceStack.getSender())) {
-      alreadyJoined.put((Player) commandSourceStack.getSender(), true);
-      commandSourceStack.getSender().sendMessage("You joined the game.");
-      game.addPlayer((Player) commandSourceStack.getSender());
-    } else {
-      commandSourceStack.getSender().sendMessage("You already joined the game.");
+  public void execute(CommandSourceStack commandSourceStack, String[] args) {
+    if (args.length < 1) {
+      commandSourceStack.getSender().sendMessage("Invalid subcommand.");
+      return;
     }
+    switch (args[0]) {
+      case "tp":
+        // Pour aller à la map de guess/revenir à la map de jeu
+        commandSourceStack.getSender().sendMessage("Teleporting to the guess location.");
+        GameManager gameManager = GameManager.getInstance();
+        if (!gameManager.isGameStarted()) {
+          commandSourceStack.getSender().sendMessage("The game is not started.");
+          return;
+        }
+        if (gameManager.isPlayerInGame((Player) commandSourceStack.getSender())) {
+          gameManager.teleportPlayerToGuessMap((Player) commandSourceStack.getSender());
+        } else {
+          commandSourceStack.getSender().sendMessage("You are not in a game.");
+        }
+        break;
+      case "guess":
+        // Pour finir en avance
+        commandSourceStack.getSender().sendMessage("Guessing the location.");
+        break;
+      default:
+        commandSourceStack.getSender().sendMessage("Invalid subcommand.");
+    }
+
   }
 
   /**
@@ -41,8 +54,7 @@ public class GeocraftJoin implements BasicCommand {
    * @return a collection of suggestions
    */
   @Override
-  public @NotNull Collection<String> suggest(@NotNull CommandSourceStack commandSourceStack,
-                                             @NotNull String[] args) {
+  public Collection<String> suggest(CommandSourceStack commandSourceStack, String[] args) {
     return BasicCommand.super.suggest(commandSourceStack, args);
   }
 
@@ -54,7 +66,7 @@ public class GeocraftJoin implements BasicCommand {
    * @see #permission()
    */
   @Override
-  public boolean canUse(@NotNull CommandSender sender) {
+  public boolean canUse(CommandSender sender) {
     return BasicCommand.super.canUse(sender);
   }
 

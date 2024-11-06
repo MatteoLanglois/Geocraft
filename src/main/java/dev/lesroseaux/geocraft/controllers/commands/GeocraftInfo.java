@@ -1,14 +1,13 @@
-package dev.lesroseaux.geocraft.data.commands;
+package dev.lesroseaux.geocraft.controllers.commands;
 
 import io.papermc.paper.command.brigadier.BasicCommand;
 import io.papermc.paper.command.brigadier.CommandSourceStack;
 import java.util.Collection;
-import java.util.List;
 import org.bukkit.command.CommandSender;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
-public class GeocraftMap implements BasicCommand {
+public class GeocraftInfo implements BasicCommand {
   /**
    * Executes the command with the given {@link CommandSourceStack} and arguments.
    *
@@ -17,17 +16,7 @@ public class GeocraftMap implements BasicCommand {
    */
   @Override
   public void execute(@NotNull CommandSourceStack commandSourceStack, @NotNull String[] args) {
-    if (args.length == 0) {
-      commandSourceStack.getSender().sendMessage("You must specify a subcommand.");
-    } else {
-      switch (args[0]) {
-        case "create" -> commandSourceStack.getSender().sendMessage("Map created.");
-        case "edit" -> commandSourceStack.getSender().sendMessage("Map edited.");
-        case "remove" -> commandSourceStack.getSender().sendMessage("Map removed.");
-        case "info" -> commandSourceStack.getSender().sendMessage("Map info.");
-        default -> commandSourceStack.getSender().sendMessage("Invalid subcommand.");
-      }
-    }
+
   }
 
   /**
@@ -40,9 +29,6 @@ public class GeocraftMap implements BasicCommand {
   @Override
   public @NotNull Collection<String> suggest(@NotNull CommandSourceStack commandSourceStack,
                                              @NotNull String[] args) {
-    if (args.length == 1) {
-      return List.of("create", "edit", "remove", "info");
-    }
     return BasicCommand.super.suggest(commandSourceStack, args);
   }
 

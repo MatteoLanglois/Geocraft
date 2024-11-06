@@ -8,17 +8,26 @@ api-version: "1.21"
 commands:
   geocraft-create:
     description: Create a new zone
-    usage: /greocraft-create zoneName
-  geocraft-list:
-    description: List all the zones
-    usage: /geocraft-list
-  geocraft-start:
-    description: Start a game
-    usage: /geocraft-start
-  geocraft-reloaddb:
-    description: Reload the database
-    usage: /geocraft-reloaddb
+    usage: /greocraft-create zoneType zoneName
+  geocraft-guess:
+    description: Guess the location
+    usage: /geocraft-guess
+  geocraft-info:
+    description: Get information about the zone
+    usage: /geocraft-info
   geocraft-join:
     description: Join a game
     usage: /geocraft-join
+  geocraft-list:
+    description: List all the zones
+    usage: /geocraft-list
+  geocraft-map:
+    description: Create the map
+    usage: /geocraft-map
+  geocraft-reloaddb:
+    description: Reload the database
+    usage: /geocraft-reloaddb
+  geocraft-start:
+    description: Start a game
+    usage: /geocraft-start
 

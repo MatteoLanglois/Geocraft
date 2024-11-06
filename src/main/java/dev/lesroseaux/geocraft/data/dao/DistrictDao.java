@@ -1,6 +1,6 @@
 package dev.lesroseaux.geocraft.data.dao;
 
-import dev.lesroseaux.geocraft.models.Location.District;
+import dev.lesroseaux.geocraft.models.location.District;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.util.ArrayList;
@@ -10,10 +10,11 @@ public class DistrictDao extends AbstractDao<District> {
   @Override
   public int insert(District obj) {
     String preparedStatement = "INSERT INTO districts (district_name, city_id) VALUES (?, ?)";
-    try (PreparedStatement statement = connection.prepareStatement(preparedStatement, PreparedStatement.RETURN_GENERATED_KEYS)) {
+    try (PreparedStatement statement = connection.prepareStatement(preparedStatement,
+        PreparedStatement.RETURN_GENERATED_KEYS)) {
       connection.setAutoCommit(false);
-      statement.setString(1, obj.getDistrict_name());
-      statement.setInt(2, obj.getCity_id());
+      statement.setString(1, obj.getDistrictName());
+      statement.setInt(2, obj.getCityId());
       int result = statement.executeUpdate();
       connection.commit();
       return result;
@@ -28,8 +29,8 @@ public class DistrictDao extends AbstractDao<District> {
     try {
       PreparedStatement statement = connection.prepareStatement(preparedStatement);
       connection.setAutoCommit(false);
-      statement.setString(1, obj.getDistrict_name());
-      statement.setInt(2, obj.getDistrict_id());
+      statement.setString(1, obj.getDistrictName());
+      statement.setInt(2, obj.getDistrictId());
       statement.executeUpdate();
       connection.commit();
     } catch (Exception e) {
@@ -43,7 +44,7 @@ public class DistrictDao extends AbstractDao<District> {
     try {
       PreparedStatement statement = connection.prepareStatement(preparedStatement);
       connection.setAutoCommit(false);
-      statement.setInt(1, obj.getDistrict_id());
+      statement.setInt(1, obj.getDistrictId());
       statement.executeUpdate();
       connection.commit();
     } catch (Exception e) {
@@ -105,22 +106,13 @@ public class DistrictDao extends AbstractDao<District> {
     }
   }
 
-  public static String getTableCreationQuery() {
+  public String getTableCreationQuery() {
     return "CREATE TABLE IF NOT EXISTS districts ("
         + "district_id INT AUTO_INCREMENT PRIMARY KEY,"
         + "district_name VARCHAR(255) NOT NULL,"
         + "city_id INT NOT NULL,"
         + "FOREIGN KEY (city_id) REFERENCES cities(city_id)"
         + ")";
-  }
-
-  public void createTable() {
-    String query = getTableCreationQuery();
-    try {
-      connection.prepareStatement(query).executeUpdate();
-    } catch (Exception e) {
-      throw new RuntimeException(e);
-    }
   }
 
   public District getDistrictByName(@NotNull String districtName) {

@@ -1,6 +1,6 @@
 package dev.lesroseaux.geocraft.data.dao;
 
-import dev.lesroseaux.geocraft.models.Location.City;
+import dev.lesroseaux.geocraft.models.location.City;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.util.ArrayList;
@@ -13,8 +13,8 @@ public class CityDao extends AbstractDao<City> {
     try (PreparedStatement statement = connection.prepareStatement(query,
         PreparedStatement.RETURN_GENERATED_KEYS)) {
       connection.setAutoCommit(false);
-      statement.setString(1, obj.getCity_name());
-      statement.setInt(2, obj.getRegion_id());
+      statement.setString(1, obj.getCityName());
+      statement.setInt(2, obj.getRegionId());
       int result = statement.executeUpdate();
       connection.commit();
       return result;
@@ -29,8 +29,8 @@ public class CityDao extends AbstractDao<City> {
     try {
       PreparedStatement statement = connection.prepareStatement(query);
       connection.setAutoCommit(false);
-      statement.setString(1, obj.getCity_name());
-      statement.setInt(2, obj.getCity_id());
+      statement.setString(1, obj.getCityName());
+      statement.setInt(2, obj.getCityId());
       statement.executeUpdate();
       connection.commit();
     } catch (Exception e) {
@@ -45,7 +45,7 @@ public class CityDao extends AbstractDao<City> {
     try {
       PreparedStatement statement = connection.prepareStatement(query);
       connection.setAutoCommit(false);
-      statement.setInt(1, obj.getCity_id());
+      statement.setInt(1, obj.getCityId());
       statement.executeUpdate();
       connection.commit();
     } catch (Exception e) {
@@ -102,22 +102,13 @@ public class CityDao extends AbstractDao<City> {
     }
   }
 
-  public static String getTableCreationQuery() {
+  public String getTableCreationQuery() {
     return "CREATE TABLE IF NOT EXISTS cities ("
         + "city_id INT AUTO_INCREMENT PRIMARY KEY,"
         + "name VARCHAR(255) NOT NULL,"
         + "region_id INT NOT NULL,"
         + "FOREIGN KEY (region_id) REFERENCES regions(region_id)"
         + ")";
-  }
-
-  public void createTable() {
-    String query = getTableCreationQuery();
-    try {
-      connection.prepareStatement(query).executeUpdate();
-    } catch (Exception e) {
-      throw new RuntimeException(e);
-    }
   }
 
   public City getCityByName(@NotNull String cityName) {

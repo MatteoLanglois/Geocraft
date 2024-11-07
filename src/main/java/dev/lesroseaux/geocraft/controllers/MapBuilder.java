@@ -68,14 +68,15 @@ public class MapBuilder {
   private void processAndPlaceBlocks(World world) {
     int newX = this.start.getBlockX();
     int newZ = this.start.getBlockZ();
+    int scale = geocraftMap.getScale();
     int totalBlocks = (geocraftMap.getMaxX() - geocraftMap.getMinX()) * (geocraftMap.getMaxZ() - geocraftMap.getMinZ());
     int processedBlocks = 0;
 
-    for (int x = geocraftMap.getMinX(); x < geocraftMap.getMaxX(); x += geocraftMap.getScale()) {
-      for (int z = geocraftMap.getMinZ(); z < geocraftMap.getMaxZ(); z += geocraftMap.getScale()) {
+    for (int x = geocraftMap.getMinX(); x < geocraftMap.getMaxX(); x += scale) {
+      for (int z = geocraftMap.getMinZ(); z < geocraftMap.getMaxZ(); z += scale) {
         HashMap<Material, Integer> blockCount = new HashMap<>();
-        for (int xx = 0; xx < geocraftMap.getScale(); xx++) {
-          for (int zz = 0; zz < geocraftMap.getScale(); zz++) {
+        for (int xx = 0; xx < scale; xx++) {
+          for (int zz = 0; zz < scale; zz++) {
             int y;
             if (this.start.getX() < geocraftMap.getMaxX() && this.start.getX() > geocraftMap.getMinX()
                 && this.start.getZ() < geocraftMap.getMaxZ() && this.start.getZ() > geocraftMap.getMinZ()) {
@@ -102,7 +103,7 @@ public class MapBuilder {
           });
         });
 
-        processedBlocks += 64;
+        processedBlocks += scale * scale;
         double progress = (double) processedBlocks / totalBlocks;
         bossBar.setProgress(progress);
       }

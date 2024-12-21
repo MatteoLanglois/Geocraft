@@ -24,15 +24,19 @@ public class GeocraftJoin implements BasicCommand {
     // Update instance of the game
     GameManager gameManager = GameManager.getInstance();
 
-    if (!gameManager.isGameStarted()) {
-      if (gameManager.isPlayerInGame((Player) commandSourceStack.getSender())) {
-        commandSourceStack.getSender().sendMessage("You have already joined the game.");
+    if (commandSourceStack.getSender() instanceof Player player) {
+      if (!gameManager.isGameStarted()) {
+        if (gameManager.isPlayerInGame(player)) {
+          player.sendMessage("You have already joined the game.");
+        } else {
+          gameManager.addPlayer(player);
+          player.sendMessage("You joined the game.");
+        }
       } else {
-        gameManager.addPlayer((Player) commandSourceStack.getSender());
-        commandSourceStack.getSender().sendMessage("You joined the game.");
+        player.sendMessage("The game has already started.");
       }
     } else {
-      commandSourceStack.getSender().sendMessage("The game has already started.");
+      commandSourceStack.getSender().sendMessage("Only players can join the game.");
     }
   }
 

@@ -15,7 +15,7 @@ public class Game {
   private final ArrayList<GeocraftPlayer> players;
   private Duration gameDuration;
   private GeocraftMap geocraftMap;
-  private Random random;
+  private final Random random;
   private long startTime;
 
   public Game() {
@@ -24,6 +24,7 @@ public class Game {
     this.players = new ArrayList<>();
     this.gameUuid = UUID.randomUUID();
     this.random = new Random();
+    this.geocraftMap = null; // Initialize geocraftMap to null
   }
 
   public Duration getGameDuration() {
@@ -55,7 +56,7 @@ public class Game {
   }
 
   public void addPlayer(Player player) {
-    List<Banner> banners = Banner.bannersList;
+    List<Banner> banners = new ArrayList<>(Banner.bannersList);
     for (GeocraftPlayer geocraftPlayer : players) {
       banners.remove(geocraftPlayer.getBanner());
     }

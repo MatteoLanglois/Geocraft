@@ -30,7 +30,7 @@ public class GeocraftCreate implements BasicCommand {
   }
 
   @Override
-  public void execute(@NotNull CommandSourceStack commandSourceStack, String[] @NotNull strings) {
+  public void execute(@NotNull CommandSourceStack commandSourceStack, @NotNull String[] strings) {
     Player sender = (Player) commandSourceStack.getSender();
     switch (strings[0]) {
       case "region" -> {

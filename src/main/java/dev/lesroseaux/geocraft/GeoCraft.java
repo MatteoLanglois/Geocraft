@@ -4,7 +4,6 @@ import com.destroystokyo.paper.ParticleBuilder;
 import dev.lesroseaux.geocraft.controllers.commands.GeocraftCreate;
 import dev.lesroseaux.geocraft.controllers.commands.GeocraftGuess;
 import dev.lesroseaux.geocraft.controllers.commands.GeocraftJoin;
-import dev.lesroseaux.geocraft.controllers.commands.GeocraftList;
 import dev.lesroseaux.geocraft.controllers.commands.GeocraftMap;
 import dev.lesroseaux.geocraft.controllers.commands.GeocraftReloadDb;
 import dev.lesroseaux.geocraft.controllers.commands.GeocraftStart;
@@ -33,7 +32,6 @@ import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.plugin.Plugin;
 import org.bukkit.plugin.java.JavaPlugin;
-import org.jetbrains.annotations.NotNull;
 
 public class GeoCraft extends JavaPlugin implements Listener {
   private Location tempPoint1;
@@ -54,10 +52,7 @@ public class GeoCraft extends JavaPlugin implements Listener {
       final Commands commands = event.registrar();
       commands.register("geocraft-create", "Create a playable zone", new GeocraftCreate(this));
       commands.register("geocraft-guess", "Guess the location", new GeocraftGuess());
-      commands.register("geocraft-info", "Get information about a playable zone",
-          new GeocraftList());
       commands.register("geocraft-join", "Join the game", new GeocraftJoin());
-      commands.register("geocraft-list", "List all playable zones", new GeocraftList());
       commands.register("geocraft-map", "Create a map of the playable zone", new GeocraftMap(this));
       commands.register("geocraft-reloaddb", "Reload the database", new GeocraftReloadDb(this));
       commands.register("geocraft-start", "Start the game", new GeocraftStart(this));

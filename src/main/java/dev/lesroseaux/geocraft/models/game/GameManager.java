@@ -7,6 +7,8 @@ import dev.lesroseaux.geocraft.models.location.Road;
 import dev.lesroseaux.geocraft.models.score.ScoreManager;
 import java.time.Duration;
 import java.util.concurrent.CompletableFuture;
+import net.kyori.adventure.text.Component;
+import net.kyori.adventure.text.format.TextColor;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.Material;
@@ -105,7 +107,7 @@ public class GameManager {
     game.getPlayers().forEach(GeocraftPlayer::setInventory);
     game.start();
     initBossBar();
-    scheduler.scheduleSyncRepeatingTask(plugin, this::updateBossBar, 0, 1);
+    scheduler.scheduleSyncRepeatingTask(plugin, this::updateBossBar, 0, 20);
   }
 
   private void teleportPlayer(GeocraftPlayer player, ArrayList<Road> roads) {
@@ -114,12 +116,7 @@ public class GameManager {
     double t = new Random().nextDouble();
     int x = (int) ((1 - t) * road.getPoint1().getX() + t * road.getPoint2().getX());
     int z = (int) ((1 - t) * road.getPoint1().getZ() + t * road.getPoint2().getZ());
-    // Check if the position is possible
-    int y = player.getPlayer().getLocation().getBlockY();
-    while (world.getBlockAt(x, y, z).getType() != Material.AIR) {
-      y++;
-    }
-    Location teleportLocation  = new Location(world, x, y, z);
+    Location teleportLocation  = new Location(world, x, (road.getPoint1().y() + road.getPoint2().y()) / 2, z);
     Bukkit.getScheduler().runTask(plugin, () -> player.teleportToRandom(teleportLocation));
   }
 
@@ -154,11 +151,20 @@ public class GameManager {
 
   public void addPlayer(Player player) {
     game.addPlayer(player);
+    Component message = Component.text("You joined the game.").color(TextColor.color(0x00FF00));
+    player.sendMessage(message);
+    Component messageToOthers = Component.text(player.getName()).color(TextColor.color(0x00FF00))
+        .append(Component.text(" joined the game."));
+    game.getPlayers().forEach(gamePlayer -> gamePlayer.getPlayer().sendMessage(messageToOthers));
     scoreManager.addPlayer(game.getPlayer(player));
   }
 
   public void removePlayer(Player player) {
     game.removePlayer(player);
+    player.sendMessage("You left the game.");
+    Component message = Component.text(player.getName()).color(TextColor.color(0xFF0000))
+        .append(Component.text(" left the game."));
+    game.getPlayers().forEach(gamePlayer -> gamePlayer.getPlayer().sendMessage(message));
     scoreManager.removePlayer(game.getPlayer(player));
   }
 
@@ -179,7 +185,6 @@ public class GameManager {
   }
 
   public void teleportPlayerToGuessMap(Player sender) {
-    // TODO : Teleport the player to the guess map
     GeocraftPlayer player = game.getPlayer(sender);
     player.teleportToGuess();
   }

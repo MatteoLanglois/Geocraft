@@ -9,6 +9,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.concurrent.CompletableFuture;
+import java.util.stream.IntStream;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.Material;
@@ -75,24 +76,28 @@ public class MapBuilder {
     for (int x = geocraftMap.getMinX(); x < geocraftMap.getMaxX(); x += scale) {
       for (int z = geocraftMap.getMinZ(); z < geocraftMap.getMaxZ(); z += scale) {
         HashMap<Material, Integer> blockCount = new HashMap<>();
-        for (int xx = 0; xx < scale; xx++) {
-          for (int zz = 0; zz < scale; zz++) {
+        int finalX = x;
+        int finalZ = z;
+        IntStream.range(0, scale).parallel().forEach(xx -> {
+          IntStream.range(0, scale).parallel().forEach(zz -> {
             int y;
             if (this.start.getX() < geocraftMap.getMaxX() && this.start.getX() > geocraftMap.getMinX()
                 && this.start.getZ() < geocraftMap.getMaxZ() && this.start.getZ() > geocraftMap.getMinZ()) {
               y = this.start.getBlockY() - 1;
-              while (world.getBlockAt(x + xx, y, z + zz).getType() == Material.AIR) {
+              while (world.getBlockAt(finalX + xx, y, finalZ + zz).getType() == Material.AIR) {
                 y--;
               }
             } else {
-              y = world.getHighestBlockYAt(x + xx, z + zz);
+              y = world.getHighestBlockYAt(finalX + xx, finalZ + zz);
             }
 
-            Block block = world.getBlockAt(x + xx, y, z + zz);
+            Block block = world.getBlockAt(finalX + xx, y, finalZ + zz);
             Material material = block.getType();
-            blockCount.put(material, blockCount.getOrDefault(material, 0) + 1);
-          }
-        }
+            synchronized (blockCount) {
+              blockCount.put(material, blockCount.getOrDefault(material, 0) + 1);
+            }
+          });
+        });
         Material mostFrequentBlock = getMostFrequentBlock(blockCount);
         Location location = new Location(world, newX, start.getBlockY(), newZ);
         newZ++;

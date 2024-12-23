@@ -6,7 +6,17 @@ import java.sql.ResultSet;
 import java.util.ArrayList;
 import org.jetbrains.annotations.NotNull;
 
+/**
+ * Data Access Object (DAO) for the City entity.
+ */
 public class CityDao extends AbstractDao<City> {
+
+  /**
+   * Inserts a City object into the database.
+   *
+   * @param obj The City object to insert.
+   * @return The ID of the inserted City.
+   */
   @Override
   public int insert(City obj) {
     String query = "INSERT INTO cities (name, region_id) VALUES (?, ?);";
@@ -23,6 +33,11 @@ public class CityDao extends AbstractDao<City> {
     }
   }
 
+  /**
+   * Updates a City object in the database.
+   *
+   * @param obj The City object to update.
+   */
   @Override
   public void update(City obj) {
     String query = "UPDATE cities SET name = ? WHERE city_id = ?;";
@@ -36,9 +51,13 @@ public class CityDao extends AbstractDao<City> {
     } catch (Exception e) {
       throw new RuntimeException(e);
     }
-
   }
 
+  /**
+   * Deletes a City object from the database.
+   *
+   * @param obj The City object to delete.
+   */
   @Override
   public void delete(City obj) {
     String query = "DELETE FROM cities WHERE city_id = ?;";
@@ -51,9 +70,14 @@ public class CityDao extends AbstractDao<City> {
     } catch (Exception e) {
       throw new RuntimeException(e);
     }
-
   }
 
+  /**
+   * Retrieves a City object by its ID.
+   *
+   * @param id The ID of the City to retrieve.
+   * @return The City object with the specified ID.
+   */
   @Override
   public City getById(int id) {
     String query = "SELECT * FROM cities WHERE city_id = ?;";
@@ -70,6 +94,11 @@ public class CityDao extends AbstractDao<City> {
     return null;
   }
 
+  /**
+   * Retrieves all City objects from the database.
+   *
+   * @return A list of all City objects.
+   */
   @Override
   public ArrayList<City> getAll() {
     String query = "SELECT * FROM cities;";
@@ -86,6 +115,12 @@ public class CityDao extends AbstractDao<City> {
     }
   }
 
+  /**
+   * Retrieves all City objects by their region ID.
+   *
+   * @param regionId The region ID to filter by.
+   * @return A list of City objects in the specified region.
+   */
   public ArrayList<City> getAllCitiesByRegionId(int regionId) {
     String query = "SELECT * FROM cities WHERE region_id = ?;";
     try {
@@ -102,6 +137,11 @@ public class CityDao extends AbstractDao<City> {
     }
   }
 
+  /**
+   * Gets the SQL query for creating the cities table.
+   *
+   * @return The SQL query for creating the cities table.
+   */
   public String getTableCreationQuery() {
     return "CREATE TABLE IF NOT EXISTS cities ("
         + "city_id INT AUTO_INCREMENT PRIMARY KEY,"
@@ -111,6 +151,12 @@ public class CityDao extends AbstractDao<City> {
         + ")";
   }
 
+  /**
+   * Retrieves a City object by its name.
+   *
+   * @param cityName The name of the City to retrieve.
+   * @return The City object with the specified name.
+   */
   public City getCityByName(@NotNull String cityName) {
     String query = "SELECT * FROM cities WHERE name = ?;";
     try {
@@ -126,6 +172,12 @@ public class CityDao extends AbstractDao<City> {
     return null;
   }
 
+  /**
+   * Parses a ResultSet into a City object.
+   *
+   * @param resultSet The ResultSet to parse.
+   * @return The parsed City object.
+   */
   private City parseResult(ResultSet resultSet) {
     try {
       return new City(resultSet.getInt("city_id"),

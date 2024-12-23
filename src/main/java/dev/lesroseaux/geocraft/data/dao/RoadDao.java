@@ -8,7 +8,17 @@ import java.sql.Statement;
 import java.util.ArrayList;
 import org.bukkit.Location;
 
+/**
+ * Data Access Object (DAO) for the Road entity.
+ */
 public class RoadDao extends AbstractDao<Road> {
+
+  /**
+   * Inserts a Road object into the database.
+   *
+   * @param obj The Road object to insert.
+   * @return The ID of the inserted Road.
+   */
   @Override
   public int insert(Road obj) {
     String preparedStatement = "INSERT INTO road (zone_name, district_id, zone_point1_x, "
@@ -33,6 +43,11 @@ public class RoadDao extends AbstractDao<Road> {
     }
   }
 
+  /**
+   * Updates a Road object in the database.
+   *
+   * @param obj The Road object to update.
+   */
   @Override
   public void update(Road obj) {
     String preparedStatement = "UPDATE road SET zone_name = ?, zone_point1_x = ?,"
@@ -56,6 +71,11 @@ public class RoadDao extends AbstractDao<Road> {
     }
   }
 
+  /**
+   * Deletes a Road object from the database.
+   *
+   * @param obj The Road object to delete.
+   */
   @Override
   public void delete(Road obj) {
     String preparedStatement = "DELETE FROM road WHERE zone_id = ?;";
@@ -70,6 +90,12 @@ public class RoadDao extends AbstractDao<Road> {
     }
   }
 
+  /**
+   * Retrieves a Road object by its ID.
+   *
+   * @param id The ID of the Road to retrieve.
+   * @return The Road object with the specified ID.
+   */
   @Override
   public Road getById(int id) {
     String query = "SELECT * FROM road WHERE zone_id = ?;";
@@ -86,6 +112,11 @@ public class RoadDao extends AbstractDao<Road> {
     return null;
   }
 
+  /**
+   * Retrieves all Road objects from the database.
+   *
+   * @return A list of all Road objects.
+   */
   @Override
   public ArrayList<Road> getAll() {
     String query = "SELECT * FROM road;";
@@ -102,6 +133,12 @@ public class RoadDao extends AbstractDao<Road> {
     return roads;
   }
 
+  /**
+   * Retrieves all Road objects by their district ID.
+   *
+   * @param districtId The district ID to filter by.
+   * @return A list of Road objects in the specified district.
+   */
   public ArrayList<Road> getZonesByDistrictId(int districtId) {
     String query = "SELECT * FROM road WHERE district_id = ?;";
     ArrayList<Road> roads = new ArrayList<>();
@@ -118,6 +155,12 @@ public class RoadDao extends AbstractDao<Road> {
     return roads;
   }
 
+  /**
+   * Parses a ResultSet into a Road object.
+   *
+   * @param resultSet The ResultSet to parse.
+   * @return The parsed Road object.
+   */
   private Road parseResult(ResultSet resultSet) {
     try {
       WorldDao worldDao = new WorldDao();
@@ -133,6 +176,11 @@ public class RoadDao extends AbstractDao<Road> {
     }
   }
 
+  /**
+   * Gets the SQL query for creating the road table.
+   *
+   * @return The SQL query for creating the road table.
+   */
   public String getTableCreationQuery() {
     return "CREATE TABLE IF NOT EXISTS road ("
         + "zone_id INT AUTO_INCREMENT PRIMARY KEY,"

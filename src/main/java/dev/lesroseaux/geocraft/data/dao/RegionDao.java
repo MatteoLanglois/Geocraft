@@ -8,7 +8,17 @@ import java.util.ArrayList;
 import java.util.UUID;
 import org.jetbrains.annotations.NotNull;
 
+/**
+ * Data Access Object (DAO) for the Region entity.
+ */
 public class RegionDao extends AbstractDao<Region> {
+
+  /**
+   * Inserts a Region object into the database.
+   *
+   * @param obj The Region object to insert.
+   * @return The ID of the inserted Region.
+   */
   @Override
   public int insert(Region obj) {
     String preparedStatement = "INSERT INTO regions (region_name, world_id) VALUES (?, ?)";
@@ -25,6 +35,11 @@ public class RegionDao extends AbstractDao<Region> {
     }
   }
 
+  /**
+   * Updates a Region object in the database.
+   *
+   * @param obj The Region object to update.
+   */
   @Override
   public void update(Region obj) {
     String preparedStatement = "UPDATE regions SET region_name = ? WHERE region_id = ?";
@@ -37,6 +52,11 @@ public class RegionDao extends AbstractDao<Region> {
     }
   }
 
+  /**
+   * Deletes a Region object from the database.
+   *
+   * @param obj The Region object to delete.
+   */
   @Override
   public void delete(Region obj) {
     String preparedStatement = "DELETE FROM regions WHERE region_id = ?";
@@ -49,6 +69,12 @@ public class RegionDao extends AbstractDao<Region> {
     }
   }
 
+  /**
+   * Retrieves a Region object by its ID.
+   *
+   * @param id The ID of the Region to retrieve.
+   * @return The Region object with the specified ID.
+   */
   @Override
   public Region getById(int id) {
     String preparedStatement = "SELECT * FROM regions WHERE region_id = ?";
@@ -65,6 +91,11 @@ public class RegionDao extends AbstractDao<Region> {
     return null;
   }
 
+  /**
+   * Retrieves all Region objects from the database.
+   *
+   * @return A list of all Region objects.
+   */
   @Override
   public ArrayList<Region> getAll() {
     String preparedStatement = "SELECT * FROM regions";
@@ -81,10 +112,22 @@ public class RegionDao extends AbstractDao<Region> {
     }
   }
 
+  /**
+   * Retrieves all Region objects by their world ID.
+   *
+   * @param worldId The world ID to filter by.
+   * @return A list of Region objects in the specified world.
+   */
   public ArrayList<Region> getAllRegionsByWorldId(UUID worldId) {
     return null;
   }
 
+  /**
+   * Parses a ResultSet into a Region object.
+   *
+   * @param result The ResultSet to parse.
+   * @return The parsed Region object.
+   */
   private Region parseResult(ResultSet result) {
     Region r;
     try {
@@ -97,6 +140,11 @@ public class RegionDao extends AbstractDao<Region> {
     return r;
   }
 
+  /**
+   * Gets the SQL query for creating the regions table.
+   *
+   * @return The SQL query for creating the regions table.
+   */
   public String getTableCreationQuery() {
     return "CREATE TABLE IF NOT EXISTS regions ("
         + "region_id INT AUTO_INCREMENT PRIMARY KEY,"
@@ -106,6 +154,12 @@ public class RegionDao extends AbstractDao<Region> {
         + ")";
   }
 
+  /**
+   * Retrieves a Region object by its name.
+   *
+   * @param regionName The name of the Region to retrieve.
+   * @return The Region object with the specified name.
+   */
   public Region getRegionByName(@NotNull String regionName) {
     String preparedStatement = "SELECT * FROM regions WHERE LOWER(region_name) = LOWER(?)";
     try (PreparedStatement statement = connection.prepareStatement(preparedStatement)) {

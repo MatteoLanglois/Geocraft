@@ -12,7 +12,17 @@ import java.sql.Types;
 import java.util.ArrayList;
 import java.util.UUID;
 
+/**
+ * Data Access Object (DAO) for the LocationToMap entity.
+ */
 public class LocationToMapDao extends AbstractDao<LocationToMap> {
+
+  /**
+   * Inserts a LocationToMap object into the database.
+   *
+   * @param obj The LocationToMap object to insert.
+   * @return The ID of the inserted LocationToMap.
+   */
   @Override
   public int insert(LocationToMap obj) {
     String sql = "INSERT INTO location_to_map (world_id, region_id, city_id, district_id) "
@@ -57,6 +67,11 @@ public class LocationToMapDao extends AbstractDao<LocationToMap> {
     }
   }
 
+  /**
+   * Updates a LocationToMap object in the database.
+   *
+   * @param obj The LocationToMap object to update.
+   */
   @Override
   public void update(LocationToMap obj) {
     String sql = "UPDATE location_to_map SET world_id = ?, region_id = ?, city_id = ?, district_id = ? WHERE id = ?";
@@ -85,6 +100,11 @@ public class LocationToMapDao extends AbstractDao<LocationToMap> {
     }
   }
 
+  /**
+   * Deletes a LocationToMap object from the database.
+   *
+   * @param obj The LocationToMap object to delete.
+   */
   @Override
   public void delete(LocationToMap obj) {
     String sql = "DELETE FROM location_to_map WHERE id = ?";
@@ -103,6 +123,12 @@ public class LocationToMapDao extends AbstractDao<LocationToMap> {
     }
   }
 
+  /**
+   * Retrieves a LocationToMap object by its ID.
+   *
+   * @param id The ID of the LocationToMap to retrieve.
+   * @return The LocationToMap object with the specified ID.
+   */
   @Override
   public LocationToMap getById(int id) {
     String sql = "SELECT * FROM location_to_map WHERE id = ?";
@@ -121,6 +147,11 @@ public class LocationToMapDao extends AbstractDao<LocationToMap> {
     return null;
   }
 
+  /**
+   * Retrieves all LocationToMap objects from the database.
+   *
+   * @return A list of all LocationToMap objects.
+   */
   @Override
   public ArrayList<LocationToMap> getAll() {
     String sql = "SELECT * FROM location_to_map";
@@ -136,6 +167,12 @@ public class LocationToMapDao extends AbstractDao<LocationToMap> {
     }
   }
 
+  /**
+   * Retrieves a LocationToMap object by its playable zone.
+   *
+   * @param zone The playable zone to filter by.
+   * @return The LocationToMap object with the specified playable zone.
+   */
   public LocationToMap getByPlayableZone(LocationToMap zone) {
     String sql = "SELECT * FROM location_to_map WHERE world_id = ? OR region_id = ? "
         + "OR city_id = ? OR district_id = ?";
@@ -157,6 +194,12 @@ public class LocationToMapDao extends AbstractDao<LocationToMap> {
     return null;
   }
 
+  /**
+   * Retrieves the parent map of a LocationToMap object.
+   *
+   * @param locationToMap The LocationToMap object to retrieve the parent map for.
+   * @return The parent LocationToMap object.
+   */
   public LocationToMap getParentMap(LocationToMap locationToMap) {
     if (locationToMap == null) {
       return null;
@@ -174,6 +217,12 @@ public class LocationToMapDao extends AbstractDao<LocationToMap> {
     return getByPlayableZone(locationToMap);
   }
 
+  /**
+   * Parses a ResultSet into a LocationToMap object.
+   *
+   * @param rs The ResultSet to parse.
+   * @return The parsed LocationToMap object.
+   */
   private LocationToMap parseResult(ResultSet rs) {
     try {
       LocationToMap locationToMap = new LocationToMap();
@@ -194,6 +243,11 @@ public class LocationToMapDao extends AbstractDao<LocationToMap> {
     }
   }
 
+  /**
+   * Gets the SQL query for creating the location\_to\_map table.
+   *
+   * @return The SQL query for creating the location\_to\_map table.
+   */
   @Override
   public String getTableCreationQuery() {
     return "CREATE TABLE IF NOT EXISTS location_to_map ("

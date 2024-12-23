@@ -1,11 +1,9 @@
 package dev.lesroseaux.geocraft.controllers.commands;
 
-import dev.lesroseaux.geocraft.models.game.Game;
 import dev.lesroseaux.geocraft.models.game.GameManager;
 import io.papermc.paper.command.brigadier.BasicCommand;
 import io.papermc.paper.command.brigadier.CommandSourceStack;
 import java.util.Collection;
-import java.util.HashMap;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;

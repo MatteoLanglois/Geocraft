@@ -3,10 +3,14 @@ package dev.lesroseaux.geocraft.models.location;
 import dev.lesroseaux.geocraft.data.dao.DistrictDao;
 import dev.lesroseaux.geocraft.data.dao.RoadDao;
 import java.util.ArrayList;
+import lombok.Getter;
+import lombok.Setter;
 
 /**
  * Represents a city in GeoCraft, which is a playable zone.
  */
+@Setter
+@Getter
 public class City implements PlayableZone {
   private int cityId;
   private String cityName;
@@ -63,57 +67,4 @@ public class City implements PlayableZone {
     return cityId;
   }
 
-  /**
-   * Gets the ID of the city.
-   *
-   * @return The city ID.
-   */
-  public int getCityId() {
-    return cityId;
-  }
-
-  /**
-   * Sets the ID of the city.
-   *
-   * @param cityId The city ID.
-   */
-  public void setCityId(int cityId) {
-    this.cityId = cityId;
-  }
-
-  /**
-   * Gets the name of the city.
-   *
-   * @return The city name.
-   */
-  public String getCityName() {
-    return cityName;
-  }
-
-  /**
-   * Sets the name of the city.
-   *
-   * @param cityName The city name.
-   */
-  public void setCityName(String cityName) {
-    this.cityName = cityName;
-  }
-
-  /**
-   * Gets the ID of the region the city belongs to.
-   *
-   * @return The region ID.
-   */
-  public int getRegionId() {
-    return regionId;
-  }
-
-  /**
-   * Sets the ID of the region the city belongs to.
-   *
-   * @param regionId The region ID.
-   */
-  public void setRegionId(int regionId) {
-    this.regionId = regionId;
-  }
 }

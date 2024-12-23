@@ -5,23 +5,24 @@ import dev.lesroseaux.geocraft.models.location.District;
 import dev.lesroseaux.geocraft.models.location.GeoCraftWorld;
 import dev.lesroseaux.geocraft.models.location.PlayableZone;
 import dev.lesroseaux.geocraft.models.location.Region;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 /**
  * Represents a mapping of a location to a GeoCraft map.
  */
+@Getter
+@Setter
+@NoArgsConstructor
+@AllArgsConstructor
 public class LocationToMap {
   private int databaseId;
   private GeoCraftWorld world;
   private Region region;
   private City city;
   private District district;
-
-  /**
-   * Constructs a LocationToMap with a default database ID of 0.
-   */
-  public LocationToMap() {
-    this.databaseId = 0;
-  }
 
   /**
    * Constructs a LocationToMap with the specified playable zone.
@@ -95,23 +96,5 @@ public class LocationToMap {
       return this.district.getDistrictId();
     }
     return null;
-  }
-
-  /**
-   * Gets the database ID.
-   *
-   * @return The database ID.
-   */
-  public int getDatabaseId() {
-    return this.databaseId;
-  }
-
-  /**
-   * Sets the database ID to the specified value.
-   *
-   * @param id The new database ID.
-   */
-  public void setDatabaseId(int id) {
-    this.databaseId = id;
   }
 }

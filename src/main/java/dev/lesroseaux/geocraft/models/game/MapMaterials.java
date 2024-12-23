@@ -1,10 +1,9 @@
 package dev.lesroseaux.geocraft.models.game;
 
+import java.util.Arrays;
 import java.util.List;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.plugin.Plugin;
-
-import java.util.Arrays;
 
 /**
  * Utility class for saving default materials to the configuration.

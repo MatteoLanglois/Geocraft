@@ -5,20 +5,17 @@ import dev.lesroseaux.geocraft.models.game.GeocraftPlayer;
 import java.util.Comparator;
 import java.util.HashMap;
 import java.util.Map;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
 import org.bukkit.Location;
 
 /**
  * Manages the scores of players in GeoCraft.
  */
+@Getter
+@NoArgsConstructor
 public class ScoreManager {
-  private final Map<GeocraftPlayer, Score> scores;
-
-  /**
-   * Constructs a ScoreManager with an empty score map.
-   */
-  public ScoreManager() {
-    this.scores = new HashMap<>();
-  }
+  private final Map<GeocraftPlayer, Score> scores = new HashMap<>();
 
   /**
    * Adds a player to the score manager.

@@ -1,35 +1,17 @@
 package dev.lesroseaux.geocraft.models.score;
 
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+
 /**
  * Represents a score in GeoCraft.
  */
+@Setter
+@Getter
+@NoArgsConstructor
 public class Score {
   private int score;
-
-  /**
-   * Constructs a Score with an initial value of 0.
-   */
-  public Score() {
-    this.score = 0;
-  }
-
-  /**
-   * Gets the current score.
-   *
-   * @return The current score.
-   */
-  public int getScore() {
-    return score;
-  }
-
-  /**
-   * Sets the score to the specified value.
-   *
-   * @param score The new score value.
-   */
-  public void setScore(int score) {
-    this.score = score;
-  }
 
   /**
    * Adds the specified value to the current score.

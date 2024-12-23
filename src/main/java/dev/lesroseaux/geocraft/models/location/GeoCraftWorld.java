@@ -3,11 +3,15 @@ package dev.lesroseaux.geocraft.models.location;
 import dev.lesroseaux.geocraft.data.dao.RegionDao;
 import java.util.ArrayList;
 import java.util.UUID;
+import lombok.Getter;
+import lombok.Setter;
 import org.bukkit.World;
 
 /**
  * Represents a GeoCraft world, which is a playable zone.
  */
+@Setter
+@Getter
 public class GeoCraftWorld implements PlayableZone {
   private World world;
   private UUID worldId;
@@ -67,57 +71,4 @@ public class GeoCraftWorld implements PlayableZone {
     return 0;
   }
 
-  /**
-   * Gets the Bukkit world.
-   *
-   * @return The Bukkit world.
-   */
-  public World getWorld() {
-    return world;
-  }
-
-  /**
-   * Gets the UUID of the world.
-   *
-   * @return The UUID of the world.
-   */
-  public UUID getWorldId() {
-    return worldId;
-  }
-
-  /**
-   * Gets the name of the world.
-   *
-   * @return The name of the world.
-   */
-  public String getWorldName() {
-    return worldName;
-  }
-
-  /**
-   * Sets the Bukkit world.
-   *
-   * @param world The Bukkit world.
-   */
-  public void setWorld(World world) {
-    this.world = world;
-  }
-
-  /**
-   * Sets the UUID of the world.
-   *
-   * @param worldId The UUID of the world.
-   */
-  public void setWorldId(UUID worldId) {
-    this.worldId = worldId;
-  }
-
-  /**
-   * Sets the name of the world.
-   *
-   * @param worldName The name of the world.
-   */
-  public void setWorldName(String worldName) {
-    this.worldName = worldName;
-  }
 }

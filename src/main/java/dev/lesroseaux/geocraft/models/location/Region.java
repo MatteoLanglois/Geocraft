@@ -3,10 +3,14 @@ package dev.lesroseaux.geocraft.models.location;
 import dev.lesroseaux.geocraft.data.dao.CityDao;
 import java.util.ArrayList;
 import java.util.UUID;
+import lombok.Getter;
+import lombok.Setter;
 
 /**
  * Represents a region in GeoCraft, which is a playable zone.
  */
+@Getter
+@Setter
 public class Region implements PlayableZone {
   private int regionId;
   private String regionName;
@@ -37,60 +41,6 @@ public class Region implements PlayableZone {
   }
 
   /**
-   * Gets the ID of the region.
-   *
-   * @return The region ID.
-   */
-  public int getRegionId() {
-    return regionId;
-  }
-
-  /**
-   * Sets the ID of the region.
-   *
-   * @param regionId The region ID.
-   */
-  public void setRegionId(int regionId) {
-    this.regionId = regionId;
-  }
-
-  /**
-   * Gets the UUID of the world the region belongs to.
-   *
-   * @return The UUID of the world.
-   */
-  public UUID getWorldId() {
-    return worldId;
-  }
-
-  /**
-   * Sets the UUID of the world the region belongs to.
-   *
-   * @param worldId The UUID of the world.
-   */
-  public void setWorldId(UUID worldId) {
-    this.worldId = worldId;
-  }
-
-  /**
-   * Gets the name of the region.
-   *
-   * @return The region name.
-   */
-  public String getRegionName() {
-    return regionName;
-  }
-
-  /**
-   * Sets the name of the region.
-   *
-   * @param regionName The region name.
-   */
-  public void setRegionName(String regionName) {
-    this.regionName = regionName;
-  }
-
-  /**
    * Gets the zones (roads) within the region.
    *
    * @return A list of roads in the region.
@@ -107,9 +57,9 @@ public class Region implements PlayableZone {
   }
 
   /**
-   * Gets the ID of the region.
+   * Gets the ID of the playable zone.
    *
-   * @return The region ID.
+   * @return The ID of the playable zone.
    */
   @Override
   public int getId() {

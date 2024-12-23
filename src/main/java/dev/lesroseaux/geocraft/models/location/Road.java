@@ -2,11 +2,15 @@ package dev.lesroseaux.geocraft.models.location;
 
 import java.util.ArrayList;
 import java.util.List;
+import lombok.Getter;
+import lombok.Setter;
 import org.bukkit.Location;
 
 /**
  * Represents a road in GeoCraft, which is a playable zone.
  */
+@Getter
+@Setter
 public class Road implements PlayableZone {
   private final int zoneId;
   private String zoneName;
@@ -57,87 +61,6 @@ public class Road implements PlayableZone {
   }
 
   /**
-   * Gets the ID of the zone.
-   *
-   * @return The zone ID.
-   */
-  public int getZoneId() {
-    return zoneId;
-  }
-
-  /**
-   * Gets the first point of the zone.
-   *
-   * @return The first point of the zone.
-   */
-  public Location getPoint1() {
-    return zonePoint1;
-  }
-
-  /**
-   * Gets the second point of the zone.
-   *
-   * @return The second point of the zone.
-   */
-  public Location getPoint2() {
-    return zonePoint2;
-  }
-
-  /**
-   * Gets the name of the zone.
-   *
-   * @return The name of the zone.
-   */
-  public String getZoneName() {
-    return zoneName;
-  }
-
-  /**
-   * Gets the ID of the district the zone belongs to.
-   *
-   * @return The district ID.
-   */
-  public int getDistrictId() {
-    return districtId;
-  }
-
-  /**
-   * Sets the first point of the zone.
-   *
-   * @param point1 The first point of the zone.
-   */
-  public void setPoint1(Location point1) {
-    this.zonePoint1 = point1;
-  }
-
-  /**
-   * Sets the second point of the zone.
-   *
-   * @param point2 The second point of the zone.
-   */
-  public void setPoint2(Location point2) {
-    this.zonePoint2 = point2;
-  }
-
-  /**
-   * Sets the name of the zone.
-   *
-   * @param name The name of the zone.
-   */
-  public void setZoneName(String name) {
-    this.zoneName = name;
-  }
-
-  /**
-   * Sets the ID of the district the zone belongs to.
-   *
-   * @param districtId The district ID.
-   */
-  public void setDistrictId(int districtId) {
-    this.districtId = districtId;
-  }
-
-  /**
    * Prints all zones in the provided list of roads.
    *
    * @param roads The list of roads.
@@ -147,8 +70,8 @@ public class Road implements PlayableZone {
     StringBuilder sb = new StringBuilder();
     for (Road road : roads) {
       sb.append("Zone name : ").append(road.getZoneName())
-        .append("\n\tPoint 1: ").append(road.getPoint1())
-        .append("\n\tPoint 2: ").append(road.getPoint2())
+        .append("\n\tPoint 1: ").append(road.getZonePoint1())
+        .append("\n\tPoint 2: ").append(road.getZonePoint2())
         .append("\n");
     }
     return sb.toString();

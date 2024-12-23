@@ -6,12 +6,14 @@ import dev.lesroseaux.geocraft.models.location.PlayableZone;
 import dev.lesroseaux.geocraft.models.location.Road;
 import dev.lesroseaux.geocraft.models.score.ScoreManager;
 import java.time.Duration;
+import java.util.ArrayList;
+import java.util.Random;
 import java.util.concurrent.CompletableFuture;
+import lombok.Getter;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.format.TextColor;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
-import org.bukkit.Material;
 import org.bukkit.World;
 import org.bukkit.boss.BarColor;
 import org.bukkit.boss.BossBar;
@@ -20,15 +22,13 @@ import org.bukkit.entity.Player;
 import org.bukkit.plugin.Plugin;
 import org.bukkit.scheduler.BukkitScheduler;
 
-import java.util.ArrayList;
-import java.util.Random;
-
 /**
  * Manages the GeoCraft game, including initialization, player management, and game state.
  */
 public class GameManager {
   private static GameManager instance;
   private final Game game;
+  @Getter
   private boolean gameStarted;
   private MapBuilder mapBuilder;
   private final ScoreManager scoreManager;
@@ -70,7 +70,7 @@ public class GameManager {
     game.getPlayers().forEach(scoreManager::addPlayer);
 
     FileConfiguration config = plugin.getConfig();
-    Location startLocation = new Location(roads.getFirst().getPoint1().getWorld(),
+    Location startLocation = new Location(roads.getFirst().getZonePoint1().getWorld(),
         config.getInt("mapLocation.x"),
         config.getInt("mapLocation.y"),
         config.getInt("mapLocation.z"));
@@ -146,9 +146,9 @@ public class GameManager {
     Road road = roads.get(new Random().nextInt(roads.size()));
     World world = player.getPlayer().getWorld();
     double t = new Random().nextDouble();
-    int x = (int) ((1 - t) * road.getPoint1().getX() + t * road.getPoint2().getX());
-    int z = (int) ((1 - t) * road.getPoint1().getZ() + t * road.getPoint2().getZ());
-    Location teleportLocation  = new Location(world, x, (road.getPoint1().y() + road.getPoint2().y()) / 2, z);
+    int x = (int) ((1 - t) * road.getZonePoint1().getX() + t * road.getZonePoint2().getX());
+    int z = (int) ((1 - t) * road.getZonePoint1().getZ() + t * road.getZonePoint2().getZ());
+    Location teleportLocation  = new Location(world, x, (road.getZonePoint1().y() + road.getZonePoint2().y()) / 2, z);
     Bukkit.getScheduler().runTask(plugin, () -> player.teleportToRandom(teleportLocation));
   }
 
@@ -250,15 +250,6 @@ public class GameManager {
    */
   public void setMap(GeocraftMap geocraftMap) {
     game.setMap(geocraftMap);
-  }
-
-  /**
-   * Checks if the game has started.
-   *
-   * @return True if the game has started, false otherwise.
-   */
-  public boolean isGameStarted() {
-    return gameStarted;
   }
 
   /**

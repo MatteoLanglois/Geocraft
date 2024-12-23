@@ -2,16 +2,20 @@ package dev.lesroseaux.geocraft.models.game;
 
 import dev.lesroseaux.geocraft.models.location.PlayableZone;
 import dev.lesroseaux.geocraft.utils.Banner;
-import java.util.List;
-import org.bukkit.entity.Player;
 import java.time.Duration;
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Random;
 import java.util.UUID;
+import lombok.Getter;
+import lombok.Setter;
+import org.bukkit.entity.Player;
 
 /**
  * Represents a game in GeoCraft.
  */
+@Getter
+@Setter
 public class Game {
   private PlayableZone playableZone;
   private final UUID gameUuid;
@@ -31,60 +35,6 @@ public class Game {
     this.gameUuid = UUID.randomUUID();
     this.random = new Random();
     this.geocraftMap = null; // Initialize geocraftMap to null
-  }
-
-  /**
-   * Gets the duration of the game.
-   *
-   * @return The game duration.
-   */
-  public Duration getGameDuration() {
-    return gameDuration;
-  }
-
-  /**
-   * Gets the playable zone of the game.
-   *
-   * @return The playable zone.
-   */
-  public PlayableZone getPlayableZone() {
-    return playableZone;
-  }
-
-  /**
-   * Gets the unique identifier of the game.
-   *
-   * @return The game UUID.
-   */
-  public UUID getGameUuid() {
-    return gameUuid;
-  }
-
-  /**
-   * Gets the list of players in the game.
-   *
-   * @return The list of players.
-   */
-  public ArrayList<GeocraftPlayer> getPlayers() {
-    return players;
-  }
-
-  /**
-   * Sets the duration of the game.
-   *
-   * @param gameDuration The game duration.
-   */
-  public void setGameDuration(Duration gameDuration) {
-    this.gameDuration = gameDuration;
-  }
-
-  /**
-   * Sets the playable zone of the game.
-   *
-   * @param playableZone The playable zone.
-   */
-  public void setPlayableZone(PlayableZone playableZone) {
-    this.playableZone = playableZone;
   }
 
   /**
@@ -171,12 +121,4 @@ public class Game {
     startTime = System.currentTimeMillis();
   }
 
-  /**
-   * Gets the start time of the game.
-   *
-   * @return The start time in milliseconds.
-   */
-  public long getStartTime() {
-    return startTime;
-  }
 }

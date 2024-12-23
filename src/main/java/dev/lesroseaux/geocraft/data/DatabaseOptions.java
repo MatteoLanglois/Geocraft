@@ -2,6 +2,7 @@ package dev.lesroseaux.geocraft.data;
 
 import java.util.HashMap;
 import java.util.Map;
+import lombok.Getter;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.serialization.ConfigurationSerializable;
 import org.jetbrains.annotations.NotNull;
@@ -10,6 +11,7 @@ import org.jetbrains.annotations.NotNull;
  * Class representing the database options for GeoCraft.
  * Implements ConfigurationSerializable for Bukkit configuration serialization.
  */
+@Getter
 public class DatabaseOptions implements ConfigurationSerializable {
   private String host = "localhost";
   private int port = 3306;
@@ -74,51 +76,6 @@ public class DatabaseOptions implements ConfigurationSerializable {
         (String) data.get("database"),
         (String) data.get("username"),
         (String) data.get("password"));
-  }
-
-  /**
-   * Gets the database host.
-   *
-   * @return The database host.
-   */
-  public String getHost() {
-    return host;
-  }
-
-  /**
-   * Gets the database port.
-   *
-   * @return The database port.
-   */
-  public int getPort() {
-    return port;
-  }
-
-  /**
-   * Gets the database name.
-   *
-   * @return The database name.
-   */
-  public String getName() {
-    return name;
-  }
-
-  /**
-   * Gets the database username.
-   *
-   * @return The database username.
-   */
-  public String getUsername() {
-    return username;
-  }
-
-  /**
-   * Gets the database password.
-   *
-   * @return The database password.
-   */
-  public String getPassword() {
-    return password;
   }
 
   /**

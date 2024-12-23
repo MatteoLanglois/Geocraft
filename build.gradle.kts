@@ -1,6 +1,7 @@
 plugins {
     id("java")
     kotlin("jvm") version "1.9.23"
+    id("io.freefair.lombok") version "8.0.1"
 }
 
 group = "io.github.matteolanglois.geocraft"
@@ -13,6 +14,8 @@ repositories {
 
 dependencies {
     compileOnly("io.papermc.paper:paper-api:1.21.1-R0.1-SNAPSHOT")
+    compileOnly("org.projectlombok:lombok:1.18.28")
+    annotationProcessor("org.projectlombok:lombok:1.18.28")
     testImplementation(platform("org.junit:junit-bom:5.10.0"))
     testImplementation("org.junit.jupiter:junit-jupiter")
 }

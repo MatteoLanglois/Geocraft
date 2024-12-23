@@ -190,7 +190,7 @@ public class MapBuilder {
     } else {
       ArrayList<Road> roads = geocraftMap.getMap().getZones();
       if (roads != null && !roads.isEmpty()) {
-        world = roads.getFirst().getPoint1().getWorld();
+        world = roads.getFirst().getZonePoint1().getWorld();
       }
     }
     if (world == null) {

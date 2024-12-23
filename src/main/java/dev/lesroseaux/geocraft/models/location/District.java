@@ -2,10 +2,14 @@ package dev.lesroseaux.geocraft.models.location;
 
 import dev.lesroseaux.geocraft.data.dao.RoadDao;
 import java.util.ArrayList;
+import lombok.Getter;
+import lombok.Setter;
 
 /**
  * Represents a district in GeoCraft, which is a playable zone.
  */
+@Setter
+@Getter
 public class District implements PlayableZone {
   private int districtId;
   private String districtName;
@@ -21,60 +25,6 @@ public class District implements PlayableZone {
   public District(int districtId, String districtName, int cityId) {
     this.districtId = districtId;
     this.districtName = districtName;
-    this.cityId = cityId;
-  }
-
-  /**
-   * Gets the ID of the district.
-   *
-   * @return The district ID.
-   */
-  public int getDistrictId() {
-    return districtId;
-  }
-
-  /**
-   * Sets the ID of the district.
-   *
-   * @param districtId The district ID.
-   */
-  public void setDistrictId(int districtId) {
-    this.districtId = districtId;
-  }
-
-  /**
-   * Gets the name of the district.
-   *
-   * @return The district name.
-   */
-  public String getDistrictName() {
-    return districtName;
-  }
-
-  /**
-   * Sets the name of the district.
-   *
-   * @param districtName The district name.
-   */
-  public void setDistrictName(String districtName) {
-    this.districtName = districtName;
-  }
-
-  /**
-   * Gets the ID of the city the district belongs to.
-   *
-   * @return The city ID.
-   */
-  public int getCityId() {
-    return cityId;
-  }
-
-  /**
-   * Sets the ID of the city the district belongs to.
-   *
-   * @param cityId The city ID.
-   */
-  public void setCityId(int cityId) {
     this.cityId = cityId;
   }
 

@@ -11,6 +11,9 @@ import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
+/**
+ * Command class for handling the "join" commands in GeoCraft.
+ */
 public class GeocraftJoin implements BasicCommand {
 
   /**

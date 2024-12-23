@@ -24,18 +24,32 @@ import org.bukkit.scheduler.BukkitScheduler;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
+/**
+ * Command class for handling the "start" commands in GeoCraft.
+ */
 public class GeocraftStart implements BasicCommand {
   private final HashMap<Player, Boolean> alreadyStarted;
   private GameManager gameManager = GameManager.getInstance();
   private final BukkitScheduler scheduler;
   private final Plugin plugin;
 
+  /**
+   * Constructor for GeocraftStart.
+   *
+   * @param plugin The plugin instance.
+   */
   public GeocraftStart(@NotNull Plugin plugin) {
     this.alreadyStarted = new HashMap<>();
     this.plugin = plugin;
     this.scheduler = plugin.getServer().getScheduler();
   }
 
+  /**
+   * Executes the command with the given {@link CommandSourceStack} and arguments.
+   *
+   * @param commandSourceStack the commandSourceStack of the command
+   * @param strings            the arguments of the command ignoring repeated spaces
+   */
   @Override
   public void execute(@NotNull CommandSourceStack commandSourceStack, @NotNull String[] strings) {
     Player player = (Player) commandSourceStack.getSender();
@@ -100,17 +114,36 @@ public class GeocraftStart implements BasicCommand {
 
   }
 
+  /**
+   * Suggests possible completions for the given command {@link CommandSourceStack} and arguments.
+   *
+   * @param commandSourceStack the commandSourceStack of the command
+   * @param args               the arguments of the command including repeated spaces
+   * @return a collection of suggestions
+   */
   @Override
   public @NotNull Collection<String> suggest(@NotNull CommandSourceStack commandSourceStack,
                                              @NotNull String[] args) {
     return BasicCommand.super.suggest(commandSourceStack, args);
   }
 
+  /**
+   * Checks whether a command sender can receive and run the root command.
+   *
+   * @param sender the command sender trying to execute the command
+   * @return whether the command sender fulfills the root command requirement
+   * @see #permission()
+   */
   @Override
   public boolean canUse(@NotNull CommandSender sender) {
     return BasicCommand.super.canUse(sender);
   }
 
+  /**
+   * Returns the permission for the root command used in {@link #canUse(CommandSender)} by default.
+   *
+   * @return the permission for the root command used in {@link #canUse(CommandSender)}
+   */
   @Override
   public @Nullable String permission() {
     return BasicCommand.super.permission();

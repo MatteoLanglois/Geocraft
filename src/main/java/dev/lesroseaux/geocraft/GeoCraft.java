@@ -33,9 +33,17 @@ import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.plugin.Plugin;
 import org.bukkit.plugin.java.JavaPlugin;
 
+/**
+ * Main class for the GeoCraft plugin.
+ */
 public class GeoCraft extends JavaPlugin implements Listener {
   private Location tempPoint1;
   private Location tempPoint2;
+
+  /**
+   * Called when the plugin is enabled.
+   * Registers commands, events, and initializes the database connection.
+   */
   @Override
   public void onEnable() {
     ConfigurationSerialization.registerClass(DatabaseOptions.class, "database");
@@ -60,6 +68,10 @@ public class GeoCraft extends JavaPlugin implements Listener {
     this.getLogger().info("GeoCraft plugin enabled.");
     this.getLogger().info("Size required :" + City.class);
   }
+
+  /**
+   * Sets the default configuration values.
+   */
   private void setConfig() {
     FileConfiguration config = getConfig();
     config.addDefault("database.host", "localhost");
@@ -76,17 +88,35 @@ public class GeoCraft extends JavaPlugin implements Listener {
     saveResource("config.yml", false);
   }
 
+  /**
+   * Event handler for player join events.
+   * Sends a welcome message to the player.
+   *
+   * @param event The player join event.
+   */
   @EventHandler
   public void onPlayerJoin(PlayerJoinEvent event) {
     event.getPlayer().sendMessage(Component.text("Hello, " + event.getPlayer().getName() + "!"));
   }
 
+  /**
+   * Checks if the player is holding the selection tool.
+   *
+   * @param player The player to check.
+   * @return True if the player is holding the selection tool, false otherwise.
+   */
   private boolean isHoldingSelectionTool(Player player) {
     FileConfiguration config = getConfig();
     return player.getInventory().getItemInMainHand().getType() == Material
         .valueOf(config.getString("tools.selection"));
   }
 
+  /**
+   * Event handler for player interact events.
+   * Sets the selection points and displays the road.
+   *
+   * @param event The player interact event.
+   */
   @EventHandler
   public void onPlayerInteract(PlayerInteractEvent event) {
     Player player = event.getPlayer();
@@ -107,6 +137,12 @@ public class GeoCraft extends JavaPlugin implements Listener {
     }
   }
 
+  /**
+   * Displays a road between two points using particles.
+   *
+   * @param point1 The first point.
+   * @param point2 The second point.
+   */
   private void displayRoad(Location point1, Location point2) {
     ParticleBuilder particleBuilder = new ParticleBuilder(Particle.BUBBLE);
 
@@ -128,6 +164,13 @@ public class GeoCraft extends JavaPlugin implements Listener {
     }, 0L, 1L); // Run every tick (1L)
   }
 
+  /**
+   * Draws a line between two points using particles.
+   *
+   * @param particleBuilder The particle builder.
+   * @param start The starting point.
+   * @param end The ending point.
+   */
   private void drawLine(ParticleBuilder particleBuilder, Location start, Location end) {
     double distance = start.distance(end);
     if (distance == 0 || distance > 600) {
@@ -142,15 +185,31 @@ public class GeoCraft extends JavaPlugin implements Listener {
     }
   }
 
+  /**
+   * Converts a location to a string representation.
+   *
+   * @param location The location to convert.
+   * @return The string representation of the location.
+   */
   private String locationToString(Location location) {
     return "(" + location.getBlockX() + ", " + location.getBlockY() + ", "
         + location.getBlockZ() + ")";
   }
 
+  /**
+   * Gets the first temporary point.
+   *
+   * @return The first temporary point.
+   */
   public Location getTempPoint1() {
     return tempPoint1;
   }
 
+  /**
+   * Gets the second temporary point.
+   *
+   * @return The second temporary point.
+   */
   public Location getTempPoint2() {
     return tempPoint2;
   }

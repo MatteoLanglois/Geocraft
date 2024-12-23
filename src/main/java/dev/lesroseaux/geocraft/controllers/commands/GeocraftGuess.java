@@ -8,7 +8,11 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.jspecify.annotations.Nullable;
 
+/**
+ * Command class for handling the "guess" commands in GeoCraft.
+ */
 public class GeocraftGuess implements BasicCommand {
+
   /**
    * Executes the command with the given {@link CommandSourceStack} and arguments.
    *
@@ -23,7 +27,7 @@ public class GeocraftGuess implements BasicCommand {
     }
     switch (args[0]) {
       case "tp":
-        // Pour aller à la map de guess/revenir à la map de jeu
+        // Teleport to the guess location or return to the game map
         commandSourceStack.getSender().sendMessage("Teleporting to the guess location.");
         GameManager gameManager = GameManager.getInstance();
         if (!gameManager.isGameStarted()) {
@@ -37,13 +41,12 @@ public class GeocraftGuess implements BasicCommand {
         }
         break;
       case "guess":
-        // Pour finir en avance
+        // Finish the game early
         commandSourceStack.getSender().sendMessage("Guessing the location.");
         break;
       default:
         commandSourceStack.getSender().sendMessage("Invalid subcommand.");
     }
-
   }
 
   /**

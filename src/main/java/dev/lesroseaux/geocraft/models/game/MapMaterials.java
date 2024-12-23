@@ -6,7 +6,16 @@ import org.bukkit.plugin.Plugin;
 
 import java.util.Arrays;
 
+/**
+ * Utility class for saving default materials to the configuration.
+ */
 public class MapMaterials {
+
+  /**
+   * Saves the default materials to the plugin configuration.
+   *
+   * @param plugin The plugin instance.
+   */
   public static void saveDefaultMaterials(Plugin plugin) {
     FileConfiguration config = plugin.getConfig();
 
@@ -19,16 +28,31 @@ public class MapMaterials {
     plugin.saveConfig();
   }
 
+  /**
+   * Saves the default grass materials to the configuration.
+   *
+   * @param config The configuration to save to.
+   */
   private static void saveGrassMaterial(FileConfiguration config) {
     config.set("materials.grass", Arrays.asList(
         "GRASS_BLOCK", "OAK_LEAVES", "BIRCH_LEAVES", "SPRUCE_LEAVES", "JUNGLE_LEAVES",
         "ACACIA_LEAVES", "DARK_OAK_LEAVES", "AZALEA_LEAVES", "FARMLAND", "DIRT", "MANGROVE_LEAVES"));
   }
 
+  /**
+   * Saves the default water materials to the configuration.
+   *
+   * @param config The configuration to save to.
+   */
   private static void saveWaterMaterial(FileConfiguration config) {
     config.set("materials.water", List.of("WATER"));
   }
 
+  /**
+   * Saves the default building materials to the configuration.
+   *
+   * @param config The configuration to save to.
+   */
   private static void saveBuildingMaterial(FileConfiguration config) {
     config.set("materials.building", Arrays.asList(
         "STONE", "COBBLESTONE", "DIORITE", "POLISHED_BLACKSTONE_BRICK_STAIRS",
@@ -41,6 +65,11 @@ public class MapMaterials {
         "DEEPSLATE_BRICK_STAIRS", "SMOOTH_STONE", "BRICKS"));
   }
 
+  /**
+   * Saves the default road materials to the configuration.
+   *
+   * @param config The configuration to save to.
+   */
   private static void saveRoadMaterial(FileConfiguration config) {
     config.set("materials.road", Arrays.asList(
         "GRAY_CONCRETE", "WHITE_CONCRETE", "BLACK_CONCRETE", "DIRT_PATH", "GRAVEL",
@@ -50,6 +79,11 @@ public class MapMaterials {
         "PACKED_MUD", "GRANITE"));
   }
 
+  /**
+   * Saves the default sand materials to the configuration.
+   *
+   * @param config The configuration to save to.
+   */
   private static void saveSandMaterial(FileConfiguration config) {
     config.set("materials.sand", Arrays.asList(
         "SAND", "SANDSTONE", "RED_SAND", "RED_SANDSTONE", "SMOOTH_SANDSTONE"));

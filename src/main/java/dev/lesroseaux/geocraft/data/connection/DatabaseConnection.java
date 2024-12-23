@@ -13,11 +13,19 @@ import java.sql.DriverManager;
 import java.sql.SQLException;
 import java.util.Optional;
 
+/**
+ * Singleton class for managing the database connection.
+ */
 public class DatabaseConnection {
   private static DatabaseConnection instance;
   private Connection connection;
   private final DatabaseOptions options;
 
+  /**
+   * Private constructor for DatabaseConnection.
+   *
+   * @param databaseOptions The database options.
+   */
   private DatabaseConnection(DatabaseOptions databaseOptions) {
     this.options = databaseOptions;
     try {
@@ -31,6 +39,12 @@ public class DatabaseConnection {
     }
   }
 
+  /**
+   * Returns the singleton instance of DatabaseConnection.
+   *
+   * @param databaseOptions The optional database options.
+   * @return The singleton instance of DatabaseConnection.
+   */
   public static DatabaseConnection getInstance(Optional<DatabaseOptions> databaseOptions) {
     if (databaseOptions.isEmpty()) {
       if (instance != null) {
@@ -52,10 +66,18 @@ public class DatabaseConnection {
     return instance;
   }
 
+  /**
+   * Returns the current database connection.
+   *
+   * @return The current database connection.
+   */
   public Connection getConnection() {
     return connection;
   }
 
+  /**
+   * Closes the current database connection.
+   */
   public void closeConnection() {
     if (connection != null) {
       try {
@@ -66,6 +88,9 @@ public class DatabaseConnection {
     }
   }
 
+  /**
+   * Opens a new database connection.
+   */
   public void openConnection() {
     try {
       connection = DriverManager.getConnection("jdbc:mysql://" + options.getHost() + ":"
@@ -77,6 +102,11 @@ public class DatabaseConnection {
     }
   }
 
+  /**
+   * Checks if the current database connection is valid.
+   *
+   * @return True if the connection is valid, false otherwise.
+   */
   public boolean isValidConnection() {
     try {
       return connection != null && !connection.isClosed() && connection.isValid(2);

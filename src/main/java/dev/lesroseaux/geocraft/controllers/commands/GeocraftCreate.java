@@ -22,13 +22,27 @@ import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
+/**
+ * Command class for creating various geographical entities in GeoCraft.
+ */
 public class GeocraftCreate implements BasicCommand {
   private final GeoCraft plugin;
 
+  /**
+   * Constructor for GeocraftCreate.
+   *
+   * @param plugin The GeoCraft plugin instance.
+   */
   public GeocraftCreate(GeoCraft plugin) {
     this.plugin = plugin;
   }
 
+  /**
+   * Executes the command based on the provided arguments.
+   *
+   * @param commandSourceStack The source of the command.
+   * @param strings The command arguments.
+   */
   @Override
   public void execute(@NotNull CommandSourceStack commandSourceStack, @NotNull String[] strings) {
     Player sender = (Player) commandSourceStack.getSender();
@@ -94,42 +108,62 @@ public class GeocraftCreate implements BasicCommand {
     }
   }
 
+  /**
+   * Provides command suggestions based on the current input.
+   *
+   * @param commandSourceStack The source of the command.
+   * @param args The current command arguments.
+   * @return A collection of suggested command completions.
+   */
   @Override
   public @NotNull Collection<String> suggest(@NotNull CommandSourceStack commandSourceStack,
-                                             @NotNull String[] args) {
+                                             @NotNull String @NotNull [] args) {
     ArrayList<String> suggests = new ArrayList<>();
     if (args.length == 0) {
       return List.of(new String[] {"region", "city", "district", "road"});
     } else if (args.length == 3) {
-      switch (args[0]) {
-        case "city":
+      return switch (args[0]) {
+        case "city" -> {
           for (Region r : new RegionDao().getAllRegionsByWorldId(
               ((Player) commandSourceStack.getSender()).getWorld().getUID())) {
             suggests.add(r.getRegionName());
           }
-          return suggests;
-        case "district":
+          yield suggests;
+        }
+        case "district" -> {
           for (City r : new CityDao().getAll()) {
             suggests.add(r.getCityName());
           }
-          return suggests;
-        case "road":
+          yield suggests;
+        }
+        case "road" -> {
           for (District r : new DistrictDao().getAll()) {
             suggests.add(r.getDistrictName());
           }
-          return suggests;
-        default:
-          return BasicCommand.super.suggest(commandSourceStack, args);
-      }
+          yield suggests;
+        }
+        default -> BasicCommand.super.suggest(commandSourceStack, args);
+      };
     }
     return BasicCommand.super.suggest(commandSourceStack, args);
   }
 
+  /**
+   * Checks if the sender can use the command.
+   *
+   * @param sender The command sender.
+   * @return True if the sender can use the command, false otherwise.
+   */
   @Override
   public boolean canUse(@NotNull CommandSender sender) {
     return BasicCommand.super.canUse(sender);
   }
 
+  /**
+   * Returns the permission required to use the command.
+   *
+   * @return The required permission, or null if none is required.
+   */
   @Override
   public @Nullable String permission() {
     return BasicCommand.super.permission();

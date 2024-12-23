@@ -12,9 +12,17 @@ import org.bukkit.configuration.file.FileConfiguration;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
+/**
+ * Command class for reloading the database configuration in GeoCraft.
+ */
 public class GeocraftReloadDb implements BasicCommand {
   private final GeoCraft plugin;
 
+  /**
+   * Constructor for GeocraftReloadDb.
+   *
+   * @param plugin The GeoCraft plugin instance.
+   */
   public GeocraftReloadDb(GeoCraft plugin) {
     this.plugin = plugin;
   }

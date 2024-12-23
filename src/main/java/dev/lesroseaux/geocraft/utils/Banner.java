@@ -7,6 +7,9 @@ import org.bukkit.Material;
 import org.bukkit.inventory.ItemStack;
 import org.jetbrains.annotations.Nullable;
 
+/**
+ * Represents a banner in GeoCraft with various colors.
+ */
 public class Banner {
   private final Material material;
 
@@ -27,6 +30,11 @@ public class Banner {
   public static final Banner MAGENTA_BANNER = new Banner(Material.MAGENTA_BANNER);
   public static final Banner PINK_BANNER = new Banner(Material.PINK_BANNER);
 
+  /**
+   * Constructs a Banner with the specified material.
+   *
+   * @param material The material of the banner.
+   */
   private Banner(Material material) {
     this.material = material;
   }
@@ -36,10 +44,20 @@ public class Banner {
       ORANGE_BANNER, YELLOW_BANNER, LIME_BANNER, GREEN_BANNER, CYAN_BANNER, LIGHT_BLUE_BANNER,
       BLUE_BANNER, PURPLE_BANNER, MAGENTA_BANNER, PINK_BANNER);
 
+  /**
+   * Gets the ItemStack representation of the banner.
+   *
+   * @return The ItemStack of the banner.
+   */
   public ItemStack getItem() {
     return new ItemStack(this.material);
   }
 
+  /**
+   * Gets the dye color of the banner.
+   *
+   * @return The dye color of the banner, or null if the color is not defined.
+   */
   public @Nullable Color getDyeColor() {
     return switch (this.material) {
       case WHITE_BANNER -> Color.WHITE;
@@ -62,6 +80,11 @@ public class Banner {
     };
   }
 
+  /**
+   * Gets the material of the banner.
+   *
+   * @return The material of the banner.
+   */
   public Material getMaterial() {
     return this.material;
   }

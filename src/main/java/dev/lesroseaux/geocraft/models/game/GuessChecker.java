@@ -7,7 +7,16 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.BlockPlaceEvent;
 
+/**
+ * Listener class for handling guessing events in GeoCraft.
+ */
 public class GuessChecker implements Listener {
+
+  /**
+   * Event handler for block placement during guessing.
+   *
+   * @param event The BlockPlaceEvent triggered when a block is placed.
+   */
   @EventHandler
   public void onGuessing(BlockPlaceEvent event) {
     if (event.isCancelled()

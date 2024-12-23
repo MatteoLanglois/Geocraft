@@ -23,6 +23,9 @@ import org.bukkit.scheduler.BukkitScheduler;
 import java.util.ArrayList;
 import java.util.Random;
 
+/**
+ * Manages the GeoCraft game, including initialization, player management, and game state.
+ */
 public class GameManager {
   private static GameManager instance;
   private final Game game;
@@ -33,12 +36,21 @@ public class GameManager {
   private ArrayList<Road> roads;
   private BossBar bossBar;
 
+  /**
+   * Private constructor for GameManager.
+   * Initializes the game and score manager.
+   */
   private GameManager() {
     game = new Game();
     gameStarted = false;
     scoreManager = new ScoreManager();
   }
 
+  /**
+   * Returns the singleton instance of GameManager.
+   *
+   * @return The singleton instance of GameManager.
+   */
   public static GameManager getInstance() {
     if (instance == null) {
       instance = new GameManager();
@@ -46,6 +58,11 @@ public class GameManager {
     return instance;
   }
 
+  /**
+   * Initializes the game with the given plugin.
+   *
+   * @param plugin The plugin instance.
+   */
   public void initGame(Plugin plugin) {
     this.plugin = plugin;
     roads = game.getPlayableZone().getZones();
@@ -71,6 +88,9 @@ public class GameManager {
     mapBuilder.build();
   }
 
+  /**
+   * Initializes the boss bar for displaying the remaining game time.
+   */
   private void initBossBar() {
     bossBar = Bukkit.createBossBar("Time left", BarColor.GREEN, org.bukkit.boss.BarStyle.SOLID);
     bossBar.setProgress(1);
@@ -78,6 +98,9 @@ public class GameManager {
     game.getPlayers().forEach(player -> bossBar.addPlayer(player.getPlayer()));
   }
 
+  /**
+   * Updates the boss bar with the remaining game time.
+   */
   private void updateBossBar() {
     long remainingTime = game.getGameDuration().toMillis() - (System.currentTimeMillis() - game.getStartTime());
     double progress = (double) remainingTime / game.getGameDuration().toMillis();
@@ -91,6 +114,9 @@ public class GameManager {
     }
   }
 
+  /**
+   * Starts the game, initializes the boss bar, and schedules the end of the game.
+   */
   public void startGame() {
     BukkitScheduler scheduler = plugin.getServer().getScheduler();
     gameStarted = true;
@@ -110,6 +136,12 @@ public class GameManager {
     scheduler.scheduleSyncRepeatingTask(plugin, this::updateBossBar, 0, 20);
   }
 
+  /**
+   * Teleports a player to a random location on a road.
+   *
+   * @param player The player to teleport.
+   * @param roads  The list of roads.
+   */
   private void teleportPlayer(GeocraftPlayer player, ArrayList<Road> roads) {
     Road road = roads.get(new Random().nextInt(roads.size()));
     World world = player.getPlayer().getWorld();
@@ -120,6 +152,9 @@ public class GameManager {
     Bukkit.getScheduler().runTask(plugin, () -> player.teleportToRandom(teleportLocation));
   }
 
+  /**
+   * Ends the game, calculates scores, announces the winner, and resets player states.
+   */
   private void endGame() {
     scoreManager.calculateScore(game.getMap(), mapBuilder.getStart());
     GeocraftPlayer winner = scoreManager.getWinner();
@@ -141,14 +176,29 @@ public class GameManager {
     }
   }
 
+  /**
+   * Sets the duration of the game.
+   *
+   * @param duration The game duration.
+   */
   public void setGameDuration(Duration duration) {
     game.setGameDuration(duration);
   }
 
+  /**
+   * Sets the playable zone of the game.
+   *
+   * @param playableZone The playable zone.
+   */
   public void setPlayableZone(PlayableZone playableZone) {
     game.setPlayableZone(playableZone);
   }
 
+  /**
+   * Adds a player to the game.
+   *
+   * @param player The player to add.
+   */
   public void addPlayer(Player player) {
     game.addPlayer(player);
     Component message = Component.text("You joined the game.").color(TextColor.color(0x00FF00));
@@ -159,6 +209,11 @@ public class GameManager {
     scoreManager.addPlayer(game.getPlayer(player));
   }
 
+  /**
+   * Removes a player from the game.
+   *
+   * @param player The player to remove.
+   */
   public void removePlayer(Player player) {
     game.removePlayer(player);
     player.sendMessage("You left the game.");
@@ -168,22 +223,49 @@ public class GameManager {
     scoreManager.removePlayer(game.getPlayer(player));
   }
 
+  /**
+   * Checks if a player is in the game.
+   *
+   * @param player The player to check.
+   * @return True if the player is in the game, false otherwise.
+   */
   public boolean isPlayerInGame(Player player) {
     return game.getPlayers().stream().anyMatch(p -> p.getPlayer().equals(player));
   }
 
+  /**
+   * Gets the GeocraftPlayer object for a given player.
+   *
+   * @param player The player to get.
+   * @return The GeocraftPlayer object, or null if not found.
+   */
   public GeocraftPlayer getPlayer(Player player) {
     return game.getPlayers().stream().filter(p -> p.getPlayer().equals(player)).findFirst().orElse(null);
   }
 
+  /**
+   * Sets the map of the game.
+   *
+   * @param geocraftMap The GeocraftMap object.
+   */
   public void setMap(GeocraftMap geocraftMap) {
     game.setMap(geocraftMap);
   }
 
+  /**
+   * Checks if the game has started.
+   *
+   * @return True if the game has started, false otherwise.
+   */
   public boolean isGameStarted() {
     return gameStarted;
   }
 
+  /**
+   * Teleports a player to the guess map.
+   *
+   * @param sender The player to teleport.
+   */
   public void teleportPlayerToGuessMap(Player sender) {
     GeocraftPlayer player = game.getPlayer(sender);
     player.teleportToGuess();

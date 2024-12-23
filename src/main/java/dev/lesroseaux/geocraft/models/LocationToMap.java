@@ -6,6 +6,9 @@ import dev.lesroseaux.geocraft.models.location.GeoCraftWorld;
 import dev.lesroseaux.geocraft.models.location.PlayableZone;
 import dev.lesroseaux.geocraft.models.location.Region;
 
+/**
+ * Represents a mapping of a location to a GeoCraft map.
+ */
 public class LocationToMap {
   private int databaseId;
   private GeoCraftWorld world;
@@ -13,10 +16,19 @@ public class LocationToMap {
   private City city;
   private District district;
 
+  /**
+   * Constructs a LocationToMap with a default database ID of 0.
+   */
   public LocationToMap() {
     this.databaseId = 0;
   }
 
+  /**
+   * Constructs a LocationToMap with the specified playable zone.
+   * The playable zone can be a GeoCraftWorld, Region, City, or District.
+   *
+   * @param playableZone The playable zone to map.
+   */
   public LocationToMap(PlayableZone playableZone) {
     if (playableZone instanceof GeoCraftWorld) {
       this.world = (GeoCraftWorld) playableZone;
@@ -30,6 +42,11 @@ public class LocationToMap {
     this.databaseId = 0;
   }
 
+  /**
+   * Gets the current location as a PlayableZone.
+   *
+   * @return The current location as a PlayableZone, or null if no location is set.
+   */
   public PlayableZone getLocation() {
     if (this.world != null) {
       return this.world;
@@ -43,6 +60,12 @@ public class LocationToMap {
     return null;
   }
 
+  /**
+   * Sets the location to the specified PlayableZone.
+   * The playable zone can be a GeoCraftWorld, Region, City, or District.
+   *
+   * @param zone The playable zone to set as the location.
+   */
   public void setLocation(PlayableZone zone) {
     if (zone instanceof GeoCraftWorld) {
       this.world = (GeoCraftWorld) zone;
@@ -55,6 +78,12 @@ public class LocationToMap {
     }
   }
 
+  /**
+   * Gets the ID of the current location.
+   * The ID can be the world ID, region ID, city ID, or district ID.
+   *
+   * @return The ID of the current location, or null if no location is set.
+   */
   public Object getId() {
     if (this.world != null) {
       return this.world.getWorldId();
@@ -68,12 +97,21 @@ public class LocationToMap {
     return null;
   }
 
+  /**
+   * Gets the database ID.
+   *
+   * @return The database ID.
+   */
   public int getDatabaseId() {
     return this.databaseId;
   }
 
+  /**
+   * Sets the database ID to the specified value.
+   *
+   * @param id The new database ID.
+   */
   public void setDatabaseId(int id) {
     this.databaseId = id;
   }
-  
 }

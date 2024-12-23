@@ -9,6 +9,9 @@ import org.bukkit.inventory.PlayerInventory;
 import org.bukkit.inventory.meta.LeatherArmorMeta;
 import org.jetbrains.annotations.NotNull;
 
+/**
+ * Represents a player in GeoCraft with additional game-related properties.
+ */
 public class GeocraftPlayer {
   private final Player player;
   private final Banner banner;
@@ -18,6 +21,12 @@ public class GeocraftPlayer {
   private boolean isAtGuessMap;
   private Location mapCenter;
 
+  /**
+   * Constructs a new GeocraftPlayer instance.
+   *
+   * @param player The Bukkit player.
+   * @param banner The player's banner.
+   */
   public GeocraftPlayer(Player player, Banner banner) {
     this.player = player;
     this.banner = banner;
@@ -28,6 +37,9 @@ public class GeocraftPlayer {
     this.mapCenter = null;
   }
 
+  /**
+   * Sets the player's inventory with the game-specific items.
+   */
   public void setInventory() {
     PlayerInventory inventory = this.player.getInventory();
     inventory.clear();
@@ -40,31 +52,63 @@ public class GeocraftPlayer {
     inventory.setHelmet(helmet);
   }
 
+  /**
+   * Resets the player's inventory to the previous state.
+   * TODO: Implement the method to reset the player's inventory.
+   */
   public void resetInventory() {
     // TODO : Reset the player's inventory with the previous one
   }
 
+  /**
+   * Gets the Bukkit player.
+   *
+   * @return The Bukkit player.
+   */
   public Player getPlayer() {
     return player;
   }
 
+  /**
+   * Gets the player's banner.
+   *
+   * @return The player's banner.
+   */
   public Banner getBanner() {
     return banner;
   }
 
+  /**
+   * Gets the player's last position.
+   *
+   * @return The player's last position.
+   */
   public Location getLastPos() {
     return lastPos;
   }
 
+  /**
+   * Teleports the player to a random location.
+   *
+   * @param location The location to teleport to.
+   */
   public void teleportToRandom(Location location) {
     this.tpLocation = location;
     player.teleport(location);
   }
 
+  /**
+   * Gets the teleport location.
+   *
+   * @return The teleport location.
+   */
   public Location getTpLocation() {
     return tpLocation;
   }
 
+  /**
+   * Teleports the player to the guess map or back to the previous location.
+   */
   public void teleportToGuess() {
     if (isAtGuessMap) {
       player.teleport(tpLocation);
@@ -79,18 +123,38 @@ public class GeocraftPlayer {
     }
   }
 
+  /**
+   * Checks if the player is at the guess map.
+   *
+   * @return True if the player is at the guess map, false otherwise.
+   */
   public boolean isAtGuessMap() {
     return isAtGuessMap;
   }
 
+  /**
+   * Sets the guessed location.
+   *
+   * @param location The guessed location.
+   */
   public void setGuessedLocation(@NotNull Location location) {
     guessedLocation = location;
   }
 
+  /**
+   * Gets the guessed location.
+   *
+   * @return The guessed location.
+   */
   public Location getGuessedLocation() {
     return guessedLocation;
   }
 
+  /**
+   * Sets the map center location.
+   *
+   * @param center The map center location.
+   */
   public void setMapCenter(Location center) {
     this.mapCenter = center;
   }

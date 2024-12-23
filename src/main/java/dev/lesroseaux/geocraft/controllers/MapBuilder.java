@@ -23,6 +23,9 @@ import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.plugin.Plugin;
 import org.jetbrains.annotations.NotNull;
 
+/**
+ * Class responsible for building the map in GeoCraft.
+ */
 public class MapBuilder {
   private final GeocraftMap geocraftMap;
   private final Location start;
@@ -30,6 +33,14 @@ public class MapBuilder {
   private final Runnable callback;
   private final BossBar bossBar;
 
+  /**
+   * Constructor for MapBuilder.
+   *
+   * @param geocraftMap The GeocraftMap object.
+   * @param start The starting location for building the map.
+   * @param plugin The plugin instance.
+   * @param callback The callback to run after building the map.
+   */
   public MapBuilder(GeocraftMap geocraftMap, Location start, Plugin plugin, Runnable callback) {
     this.geocraftMap = geocraftMap;
     this.start = start;
@@ -38,6 +49,9 @@ public class MapBuilder {
     this.bossBar = Bukkit.createBossBar("Building Map", BarColor.BLUE, BarStyle.SOLID);
   }
 
+  /**
+   * Initiates the map building process.
+   */
   public void build() {
     if (geocraftMap.getMap() == null) {
       throw new RuntimeException("Map is null");
@@ -58,6 +72,11 @@ public class MapBuilder {
       });
   }
 
+  /**
+   * Loads the configuration file.
+   *
+   * @return The loaded FileConfiguration object.
+   */
   private FileConfiguration loadConfig() {
     File configFile = new File(plugin.getDataFolder(), "config.yml");
     if (!configFile.exists()) {
@@ -66,6 +85,11 @@ public class MapBuilder {
     return YamlConfiguration.loadConfiguration(configFile);
   }
 
+  /**
+   * Processes and places blocks in the world based on the map configuration.
+   *
+   * @param world The world where the map is being built.
+   */
   private void processAndPlaceBlocks(World world) {
     int newX = this.start.getBlockX();
     int newZ = this.start.getBlockZ();
@@ -118,6 +142,12 @@ public class MapBuilder {
     plugin.getServer().getConsoleSender().sendMessage("Map built.");
   }
 
+  /**
+   * Determines the material to use for a block based on the most frequent block material.
+   *
+   * @param mostFrequentBlock The most frequent block material.
+   * @return The material to use for the block.
+   */
   private Material getMaterialForBlock(Material mostFrequentBlock) {
     if (isMaterialInList(mostFrequentBlock, "materials.grass")) {
       return geocraftMap.getGrassMaterial();
@@ -134,12 +164,24 @@ public class MapBuilder {
     }
   }
 
+  /**
+   * Checks if a material is in a specified list in the configuration.
+   *
+   * @param material The material to check.
+   * @param path The path to the list in the configuration.
+   * @return True if the material is in the list, false otherwise.
+   */
   private boolean isMaterialInList(Material material, String path) {
     FileConfiguration config = loadConfig();
     List<String> materials = config.getStringList(path);
     return materials.contains(material.name());
   }
 
+  /**
+   * Retrieves the world associated with the map.
+   *
+   * @return The world associated with the map.
+   */
   private @NotNull World getWorld() {
     World world = null;
     if (geocraftMap.getMap() instanceof GeoCraftWorld) {
@@ -157,6 +199,12 @@ public class MapBuilder {
     return world;
   }
 
+  /**
+   * Determines the most frequent block material in a given block count map.
+   *
+   * @param blockCount The map of block materials and their counts.
+   * @return The most frequent block material.
+   */
   private Material getMostFrequentBlock(HashMap<Material, Integer> blockCount) {
     return blockCount.entrySet().stream()
       .max(java.util.Map.Entry.comparingByValue())
@@ -164,6 +212,11 @@ public class MapBuilder {
       .orElse(Material.PINK_CONCRETE);
   }
 
+  /**
+   * Retrieves the center location of the guess map.
+   *
+   * @return The center location of the guess map.
+   */
   public Location getCenterOfGuessMap() {
     double x_map_length = geocraftMap.getMaxX() - geocraftMap.getMinX();
     double z_map_length = geocraftMap.getMaxZ() - geocraftMap.getMinZ();
@@ -172,6 +225,9 @@ public class MapBuilder {
     return new Location(getWorld(), x, start.getBlockY() + 1, z);
   }
 
+  /**
+   * Removes the map by setting all blocks to air.
+   */
   public void removeMap() {
     World world = getWorld();
     double x_map_length = (double) (geocraftMap.getMaxX() - geocraftMap.getMinX()) / geocraftMap.getScale();
@@ -189,6 +245,11 @@ public class MapBuilder {
     }
   }
 
+  /**
+   * Retrieves the starting location for building the map.
+   *
+   * @return The starting location.
+   */
   public Location getStart() {
     return start;
   }
